@@ -1,0 +1,187 @@
+:root {
+  --text_main: rgb(63, 63, 62);
+  --text_dark: #05386B;
+  --bg_main: #f0f0f0;
+  --text_main: rgb(63, 63, 62);
+  --text_green: #49d086;
+  --text_light: #EDF5E1;
+  --text_dark: #05386B;
+  --bg_accent_light: #8EE4AF;
+  --text_dark_low_opacity: rgba(5, 56, 107, 0.5);
+  --text_dark_border_opacity: rgba(5, 56, 107, 0.3);
+  --bg_purple: #544ED5;
+}
+
+.founders{
+  background-color: var(--bg_accent_light);
+  padding:50px;
+  width: 100%;
+  min-height: 80%;
+  font-family: "Roboto";
+  font-weight: 300;
+  font-size: 50px;
+  display: flex;
+  flex-direction: column;
+}
+
+.description{
+  max-width: 35ch;
+  font-size: 25px;
+  float:left;
+}
+
+.email{
+  width:80%;
+  font-size: 18px;
+  padding: 0.2em;
+  background-color: #f0f0f0f0;
+  border-radius: 0.5em;
+  border-style: none;
+  box-shadow: 0 0 3px 1px #1e1e78bf;
+}
+
+.proContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
+  vertical-align: center;
+}
+
+#symbol {
+  width:200px;
+  margin-left: -1.8em;
+  font-family: "Roboto Slab";
+  transform: scale(1.5)
+}
+
+.receiptPic {
+  width: 300px;
+  position: absolute;
+  display: flex;
+  margin-top: 0em;
+  margin-left: 6em;
+  filter: saturate(0.8) ;
+}
+
+.notify {
+  font-size: 18px;
+  font-family: "Roboto Slab";
+  padding: 0.45em 1em;
+  margin: 0.25em;
+  margin-left: 2em;
+  text-decoration: none;
+  background: var(--bg_purple);
+  color: var(--text_light);
+  font-weight: 400;
+  letter-spacing: 1px;
+  border-radius: 0.8em;
+  border-style: solid;
+  border-color: var(--text_dark);
+  border-width: 3px;
+  transition: 0.3s;
+}
+
+.notify:hover{
+  background: var(--text_green);
+}
+
+.notify {
+  margin: 0.5em;
+  opacity: 0.85;
+  font-size: 22px;
+  font-family: "Roboto Slab";
+  font-size: 0.8em;
+  height: fit-content;
+  padding: 0.2em 1.2em;
+  text-decoration: none;
+  background-color: rgb(39, 39, 172);
+  background-color: var(--text_dark);
+  color: var(--text_light);
+  font-weight: 400;
+  border-radius: 0.8em;
+  border-style: solid;
+  border-color: var(--text_dark_low_opacity);
+  border-width: 2px;
+  transition: 0.3s;
+}
+
+.notify:hover {
+  background-color: rgb(88, 88, 249);
+}
+
+
+@media screen and (max-width:600px) {
+  #symbol {
+    transform: scale(1);
+    padding-bottom: 1em;
+    margin-left: -2em;
+  }
+  .description {
+    font-size: 16px;
+  }
+  .email {
+    width: 80%;
+    font-size: 12px;
+  }
+  .title {
+    font-size: 22px;
+  }
+  .receiptPic {
+    display: none;
+  }
+  .notify {
+    font-size: 14px;
+  }
+}
+
+@media screen and (min-width:0px) {
+
+.proNew {
+  font-size: 10px;
+  margin-left: 0.1em;
+  margin-bottom: 1.3em;
+  padding: 0.15em;
+  background-color: #e7042e;
+  color:var(--bg_main);
+  border: 2px solid var(--text_dark_border_opacity);
+}
+.proHead {
+  margin-left: 2em;
+  margin-top: 0.25em;
+  padding: 0.25em;
+  font-size: 40px;
+  color: var(--text_dark);
+  background-color: none;
+  border-radius: 0.2em;
+  display: flex;
+  align-items: center;
+}
+
+.pro {
+  opacity: 0.8;
+  background-color: var(--text_dark);
+  transform: scale(0.7);
+}
+
+.proMsg {
+  opacity: 0.7;
+  font-family: "Roboto";
+  font-size: 18px;
+  margin-top: 1em;
+  margin-left: 2em;
+  margin-right: auto;
+}
+}
+
+@media screen and (max-width:960px) {
+  .receiptPic {
+    width: 200px;
+    margin-left: 5em;
+  }
+}
+@media screen and (max-width:750px) {
+  .receiptPic {
+    width: 140px;
+    margin-left: 4em;
+  }
+}

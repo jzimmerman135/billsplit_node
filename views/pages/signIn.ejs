@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <%- include('../partials/_header') %>
+
+    <title>BillSplit - Sign In</title>
+    <style>
+        /* BUTTON STYLING */
+        .button {
+            font-family: "Roboto Slab";
+            padding: 0.45em 1em;
+            text-decoration: none;
+            background-color: var(--bg_purple);
+            color: var(--text_light);
+            font-weight: 400;
+            letter-spacing: 1px;
+            border-radius: 0.8em;
+            border-style: solid;
+            border-color: var(--text_dark);
+            border-width: 3px;
+            transition: 0.3s;
+            
+        }
+
+        .button:hover{
+            background: var(--text_green);
+        }
+        /* FORM STYLING */
+        .fillout {
+            box-shadow: 0px 0px 10px 4px rgba(5, 56, 107, 0.1);
+            width: 30ch;
+            color: #05386B;
+            font-family: "Roboto";
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 1em;
+            margin: 1em;
+            border: 2px solid var(--text_dark_low_opacity);
+        }
+        .fillout div {
+            font-size: 20px;
+            display: flex;
+            flex-direction: row;
+        }
+        .fillout div p {
+            font-size: 12px;
+        }
+        .fillout div input {
+            font-size: 20px;
+            max-width: 30ch;
+        }
+        .fillout form {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            max-width: 40ch;
+            list-style-type: disc;
+        }
+        .fillout {
+            padding: 0.5em;
+        }
+        .fillout h1 {
+            font-family: "Roboto Slab";
+        }
+        section {
+            padding-bottom: 1em;
+        }
+        @media screen and (max-width:300px) {
+            .fillout {
+                padding: 0.5em;
+                margin: 0.25em;
+            }
+            .fillout div {
+                font-size: 15px;
+            }
+            .fillout h1 {
+                font-size: 28px;
+            }
+        }
+        .verify {
+                color: rgb(255,0,0);
+                display: none;
+           }
+           
+    </style>
+    
+</head>
+    
+<body>
+    <div id="pageContainer">
+        <!-- HEADER STUFF, CAN IGNORE -->
+        <%- include('../partials/_nav') %>
+
+        <!-- THIS SHOULD BE A LINK TO A SCRIPT THAT DETERMINES FROM COOKIES IF USER IS A GUEST
+                Note: must use a bool var called guestUser -->
+        
+        <!-- ALL PAGE CONTENT HERE -->
+        <div style="width: 100%; display: flex; justify-content: center; padding-top: 150px;">
+            <div class="fillout">
+                <h1>Sign In</h1>
+                <div>
+                    <form name ="data" method="post" onsubmit="return validateSignIn()">
+                    <section style="padding-top: .75em;">
+                        <h2>Username: <input type="text"  name='username' placeholder="Username"/></h2>
+                    </section>
+                    <section>
+                        <h2>Password: <input type="password"  name='pass' placeholder="Password"/></h2>
+                        <p class = "verify" id = "logVal1">Please enter a username and password</p>
+                        <p class = "verify" id = "logVal2">Incorrect username or password</p>
+                    </section>
+                    <p style="text-align: center; padding-bottom: 1em;">Forgot your password? <a href="/contact">Contact us</a></p>
+                    <div style="width: 100%; display: flex; justify-content: center;">
+                    <input type = "submit" value = "Sign In" class="button"/>
+                    </div>
+                    <section>
+                        <p style="text-align: center; padding-top: 1em;">Don't have an account? <a href="/signUp">Sign up!</a></p>
+                    </section>
+                    <!-- TODO: Include signing it w/ Google -->
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class = "g-signin2" data-onsuccess="onSignIn">
+        
+        </div>  
+        <br/><br/>
+        <button onclick="signOut()" class = "signOut">Sign Out</button>
+                 
+        
+        <!-- FOOTER CAN IGNORE -->
+        <%- include('../partials/_footer') %>
+    
+    </div>
+    
+</body>
+    
+    <%- include('../partials/_guestUser') %>
+
+    <!-- Verifies user input -->
+    <script src="/scripts/verifySignForm.js"></script> 
+    <script language = "javascript">
+        if (!guestUser) {
+            //a signed in user should never be able to access the sign in page
+            window.location.href = "/";
+        }
+
+        function onSignIn(googleUser) {
+            var profile = googleUser.getBasicProfile();
+            console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+            console.log('Name: ' + profile.getName());
+            console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+        }
+        
+        
+        function signOut(){
+            gapi.auth2.getAuthInstance().signOut().then(function() {
+            console.log('user signed out');
+            })
+        }
+    </script>
+       
+    
+
+</html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <%- include('../partials/_header') %>
+    <title>Billsplit - History</title>
+    <!-- LINKS TO EXTERNAL STYLESHEETS
+            format: rel="/stylesheets/example.css" -->
+    <link rel="stylesheet" href="/stylesheets/calculator_style.css">
+    <link rel="stylesheet" href="/stylesheets/history.css">
+    <style>
+        /* page specific style declarations */
+    </style>
+    
+</head>
+    
+<body>
+    <div id="pageContainer">
+        <!-- HEADER STUFF, CAN IGNORE -->
+        <%- include('../partials/_nav') %>
+
+        <!-- ALL PAGE CONTENT INSIDE HERE -->
+        <div class="container">
+            <h1>Previous Receipts</h1>
+            <div id="slider">
+                <div class="prevReceipts">
+                    <ul id="receiptList" class="receiptsList">
+                    </ul>
+                </div>
+                <div class="receiptSlide">
+                    
+                    <div class="receiptWrap">
+                        <div id="topInfo">
+                            <i class="fa fa-arrow-left"onclick="slideBack()"><span>Back</span></i>
+                            <span style="display: flex; vertical-align: center; justify-content: space-around;">
+                                
+                                <div class="receiptTitle"></div>
+                                <div class="receiptDate" style="padding-top:0.5rem"></div>
+                            </span>
+                                  
+                                
+                        </div>
+                            <div id="fullReceipt">
+                            <div class="receiptHeader">
+                                <li class="items">Item</li>
+                                <li class="prices" style="list-style-type: none; padding-left:0.8rem">Price</li>
+                                <li class="sharedBy" style="margin-left: 3em;">Shared By</li>
+                            </div>
+                        </div>
+                        <div class="remaining">
+                        <div class="taxTot">Total:  $
+                            <div id="totalVal">0</div>
+                            <div id="tax">Tax:  6.25%</div>
+                        </div>
+                            <span id="totalsRow">
+                            
+                            </span>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>      
+        
+        <!-- FOOTER CAN IGNORE -->
+        <%- include('../partials/_footer') %>
+    </div>
+    
+</body> 
+    <!-- get username information, sorry it's named guestUser
+            gives access to set and delete username functions -->
+    <%- include('../partials/_guestUser') %>
+
+    <!-- LINKS TO EXTERNAL FUNCTION SCRIPTS
+         format: src"/scripts/example.js" --> 
+    <script src="/scripts/historyBackend.js"></script>
+    <script src="/scripts/calculatorBackend.js"></script>
+    
+    <!-- Page Executable -->
+    <script>
+    var nameColors = ["#add45c","#6AD2FF","#F6E65E","#28E1D4",
+                          "#ff5732","#d478FD","#7883fd","#FFAD37",
+                          "#F31656"];
+        var names = [];
+        var initials = [];
+        var items = [];
+        var prices = [];
+        var sharedBy = [];
+        var tax = 1.0625;
+        var totals = [];
+        var finalTotals = []; //dummy, ignore
+        var payer = -1;
+        
+        // var receipts = <!% allReceipts %!>;
+        var receipts = getExampleReceipts(username);
+        createReceiptList(receipts);
+    </script>
+</html>

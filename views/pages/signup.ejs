@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <%- include('../partials/_header') %>
+
+    <title>Billsplit - Sign Up</title>
+    <style>
+        /* BUTTON STYLING */
+        .button {
+            font-family: "Roboto Slab";
+            padding: 0.45em 1em;
+            text-decoration: none;
+            background-color: var(--bg_purple);
+            color: var(--text_light);
+            font-weight: 400;
+            letter-spacing: 1px;
+            border-radius: 0.8em;
+            border-style: solid;
+            border-color: var(--text_dark);
+            border-width: 3px;
+            transition: 0.3s;
+            
+        }
+
+        .button:hover{
+            background: var(--text_green);
+        }
+        /* FORM STYLING */
+        .fillout {
+            box-shadow: 0px 0px 10px 4px rgba(5, 56, 107, 0.1);
+            width: 30ch;
+            color: #05386B;
+            font-family: "Roboto";
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 1em;
+            padding-top: 0rem;
+            margin: 1em;
+            margin-top: 0rem;
+            border: 2px solid var(--text_dark_low_opacity);
+        }
+        .fillout div {
+            font-size: 20px;
+            display: flex;
+            flex-direction: row;
+        }
+        .fillout div p {
+            font-size: 12px;
+        }
+        .fillout div input {
+            font-size: 18px;
+            width: 27ch;
+            padding: 0.1rem;
+        }
+        .fillout form {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            max-width: 40ch;
+            list-style-type: disc;
+        }
+        .fillout {
+            padding: 0.5em;
+        }
+        .fillout h1 {
+            font-family: "Roboto Slab";
+        }
+        .fillout h2 {
+            font-size: 0.8rem;
+        }
+        section {
+            padding-bottom: 1em;
+        }
+        @media screen and (max-width:300px) {
+            .fillout {
+                padding: 0.5em;
+                margin: 0.25em;
+            }
+            .fillout div {
+                font-size: 15px;
+            }
+            .fillout h1 {
+                font-size: 28px;
+            }
+        }
+        .verify {
+                color: rgb(255,0,0);
+                display: none;
+           }
+    </style>
+    
+</head>
+    
+<body>
+    <div id="pageContainer">
+        <!-- HEADER STUFF, CAN IGNORE -->
+        <%- include('../partials/_nav') %>
+
+        <!-- ALL PAGE CONTENT HERE -->
+        <div style="width: 100%; display: flex; justify-content: center; padding-top: 100px;">
+            <div class="fillout">
+                <h1>Sign Up</h1>
+                <div>
+                    <form name ="data" method="post" onsubmit="return validateSignUp()" action="/createUser">
+                    <section style="padding-top: .75em;">
+                        <h2>Username: <input type="text"  name='username' placeholder="Letters and numbers only"/></h2>
+                        <p class="verify" id = "usernameVerify">Usernames can only contain letters and numbers. Please enter a valid username</P>
+                    </section>
+                    <section>
+                        <h2>Password: <input type="password"  name='pass' placeholder="At least 8 characters"/></h2>
+                        <p class="verify" id = "passVerify">Passwords must be at least 8 characters long. Please enter a valid password.</p>
+                    </section>
+                    <section>
+                        <h2>Re-enter <br> Password: <input type="password"  name='pass' placeholder="At least 8 characters"/></h2>
+                        <p class="verify" id = "passVerify">Passwords must be at least 8 characters long. Please enter a valid password.</p>
+                    </section>
+                    <br>
+                    <section>
+                        <h2>First Name: <input type="text"  name='fname'/></h2>
+                        <p class="verify" id = "fnameVerify">Please enter your first name.</P>
+                    </section>
+                    <section>
+                        <h2>Last Name: <input type="text"  name='lname'/></h2>
+                        <p class="verify" id = "lnameVerify">Please enter your last name.</P>
+                    </section>
+                    <section>
+                        <h2>Email: <input type="text"  name='email' placeholder="Enter a valid email"/></h2>
+                        <p class="verify" id = "emailVerify">Please enter a valid email.</P>
+                    </section>
+
+                    <div style="width: 100%; display: flex; justify-content: center;">
+                         <input type = "submit" value = "Sign Up!" class="button"/>
+                    </div>
+                    <section>
+                        <p style="text-align: center; padding-top: 1em;">Already have an account? <a href="/signIn">Sign in!</a></p>
+                    </section>
+                    </form>  
+                </div>
+            </div>
+        </div>       
+        
+        <!-- FOOTER CAN IGNORE -->
+        <%- include('../partials/_footer') %>
+    
+    </div>
+    
+</body> 
+
+    <%- include('../partials/_guestUser') %>
+
+    <!-- LINKS TO EXTERNAL FUNCTION SCRIPTS
+         format: src"/scripts/example.js" -->
+    <script src="/scripts/verifySignForm.js"></script>    
+    
+    <!-- Page Executable -->
+    <script>
+        if (!guestUser) {
+            //a signed in user should never be able to access the sign in page
+            window.location.href = "/";
+        }
+
+    </script>
+       
+    
+
+</html>

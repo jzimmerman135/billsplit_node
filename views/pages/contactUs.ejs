@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <%- include('../partials/_header') %>
+    <title>Billsplit - Contact Us</title>
+    <style>
+        /* BUTTON STYLING */
+        .button {
+            font-family: "Roboto Slab";
+            padding: 0.45em 1em;
+            text-decoration: none;
+            background-color: var(--bg_purple);
+            color: var(--text_light);
+            font-weight: 400;
+            letter-spacing: 1px;
+            border-radius: 0.8em;
+            border-style: solid;
+            border-color: var(--text_dark);
+            border-width: 3px;
+            transition: 0.3s;
+            
+        }
+
+        .button:hover{
+            background: var(--text_green);
+        }
+        /* FORM STYLING */
+        .fillout {
+            box-shadow: 0px 0px 10px 4px rgba(5, 56, 107, 0.1);
+            background-color: #f8f8f8;
+            width: 30ch;
+            color: #05386B;
+            font-family: "Roboto";
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 1em;
+            margin: 1em;
+            border: 2px solid var(--text_dark_low_opacity);
+        }
+        .fillout div {
+            font-size: 20px;
+            display: flex;
+            flex-direction: row;
+        }
+        .fillout div p {
+            font-size: 12px;
+        }
+        .fillout div input {
+            font-size: 20px;
+            width: 27ch;
+            font-size: 18px;
+            padding: 0.1rem;
+        }
+        .fillout form {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            max-width: 40ch;
+            list-style-type: disc;
+        }
+        .fillout {
+            padding: 0.5em;
+        }
+        .fillout h1 {
+            font-family: "Roboto Slab";
+        }
+        section {
+            padding-bottom: 1em;
+        }
+        textarea {
+            font-family: "Roboto";
+            padding: 0.25rem;
+            border-radius: 0.1rem;
+        }
+        @media screen and (max-width:300px) {
+            .fillout {
+                padding: 0.5em;
+                margin: 0.25em;
+            }
+            .fillout div {
+                font-size: 15px;
+            }
+            .fillout h1 {
+                font-size: 28px;
+            }
+        }
+        .verify {
+                color: rgb(255,0,0);
+                display: none;
+           }
+    </style>
+    
+</head>
+    
+<body>
+    <div id="pageContainer">
+        <!-- HEADER STUFF, CAN IGNORE -->
+        <%- include('../partials/_nav') %>
+
+        <!-- ALL PAGE CONTENT INSIDE HERE -->
+        <div style="width: 100%; display: flex; justify-content: center; padding-top: 100px;">
+            <div class="fillout">
+                <h1>Contact Us</h1>
+                <div>
+                    <form name ="data" method="post" onsubmit="return validateContact()">
+                    <section style="padding-top: .75em;">
+                        <h2>Name: <input type="text"  name='username' placeholder="Letters and numbers only"/></h2>
+                        <p class="verify" id = "usernameVerify">Usernames can only contain letters and numbers. Please enter a valid username</P>
+                    </section>
+                    <section>
+                         <h2>Email: <input type="text"  name='email' placeholder="Enter a valid email"/></h2>
+                         <p class="verify" id = "emailVerify">Please enter a valid email.</P>
+                    </section>
+                    <section>
+                        <h2>Message<br/><textarea rows = "8" cols = "35" name = 'message' placeholder="Requests/Comments/Questions" style="font-size: 20px;"></textarea></h2>
+                        <p class="verify" id = "messVerify">Please enter a message.</P>
+                    </section>
+
+                    <div style="width: 100%; display: flex; justify-content: center;">
+                         <input type = "submit" value = "Submit" class="button"/>
+                    </div>
+                    </form>  
+                </div>
+            </div>
+        </div>       
+        
+        <!-- FOOTER CAN IGNORE -->
+        <%- include('../partials/_footer') %>
+    </div>
+    
+</body> 
+    <!-- get username information, sorry it's named guestUser
+            gives access to set and delete username functions -->
+    <%- include('../partials/_guestUser') %>
+
+    <!-- LINKS TO EXTERNAL FUNCTION SCRIPTS
+         format: src"/scripts/example.js" --> 
+    <script src="/scripts/verifyInput.js"></script>    
+    
+    <!-- Page Executable -->
+    <script>
+    </script>
+       
+    
+
+</html>

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <%- include('../partials/_header') %>
+    <title>Billsplit - About</title>
+    <!-- LINKS TO EXTERNAL STYLESHEETS
+            format: href="/stylesheets/example.css" -->
+    <link rel="stylesheet" href="/stylesheets/about.css">
+    <style>
+        /* page specific style declarations */
+    </style>
+    
+</head>
+    
+<body>
+    <div id="pageContainer">
+        <!-- HEADER STUFF, CAN IGNORE -->
+        <%- include('../partials/_nav') %>
+
+        <!-- ALL PAGE CONTENT INSIDE HERE -->
+        <div style ="margin-top: 2.5rem"></div>
+        <div class = "topimage">
+            <div class = "toppic">
+                <br><br>
+                <b>Our mission is making the grocery bill split for off-campus students more convenient.</b>
+                <br><br><br>
+                
+            </div>
+            </div>
+                
+                <br>
+                <div class = "message">
+                    At Billsplit, our goal is to help people share. We strive to uphold our goals every day.
+                </div>
+                <br>
+                
+            <div class = "hidden" >
+                <div  id = "boxes">
+                <div class = "flex-container1" id = "containerOne">
+                    
+                <div class = "box1">
+                    <p>Easy interface</p><br>
+                    <div class = "details">
+                    Smoothly add groceries, their costs, and housemates
+                    </div>
+                </div>
+                
+                <div class = "box2">
+                    <p>Smooth Calculations</p><br>
+                    <div class = "details">
+                    Adding and dividing costs in a second
+                    </div>
+                </div>
+                
+                </div>
+                
+                <div class = "flex-container2">
+                    
+                <div class = "box3">
+                    <p>Multiple housemates</p><br>
+                    <div class = "details">
+                    Works with any number of housemates
+                    </div>
+                </div>
+                
+                <div class = "box4">
+                    <p>Happy customer</p><br>
+                    <div class = "details">
+                    Our customers save their valuable time
+                    </div>
+                </div>
+                
+                </div>
+            </div>
+            </div>
+            
+                <br>
+                <div class = "message">
+                We believe that college students have enough work on their plates. That's why we have made it easy for them to split their grocery bill.
+                <br>
+                <br>
+                </div>
+                
+            <div class = "founders">
+                <div class = "foundTitle">Meet the founders <br>
+                And hear our story</div><br>
+                <div class = "descriptions">
+                Medford, MA. <br>
+                Zimm was an off-campus college student at Tufts who was tired of manually splitting the bill 
+                between him and his housemates. Not only was it time consuming, it was also difficult to keep track 
+                of who ate what. So he decided to create a calculator that he could use for himself. 
+                He gathered several classmates: Eddy, Anesu, and Zamie and together they started Billsplit.
+                What was once a program to just help themselves is now available to any college student who 
+                is looking to split their grocery bill.
+                
+                
+            </div>
+                
+            <div class = "founderpic">
+                <img src="/founderpic.jpg">
+            </div>
+        </div>                     
+        
+        <!-- FOOTER CAN IGNORE -->
+        <%- include('../partials/_footer') %>
+    </div>
+    
+</body> 
+    <!-- get username information, sorry it's named guestUser
+            gives access to set and delete username functions -->
+    <%- include('../partials/_guestUser') %>
+
+    <!-- LINKS TO EXTERNAL FUNCTION SCRIPTS
+         format: src"/scripts/example.js" --> 
+    
+    <!-- Page Executable -->
+    <script language="javascript">
+        $(document).scroll(function(){
+          $("div.hidden").css('opacity','1')
+        })
+        
+    </script>
+</html>
