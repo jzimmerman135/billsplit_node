@@ -912,6 +912,6 @@ function submitSavedReceipt() {
         }
     }
     stringifiedReceipt.value = JSON.stringify(makeReceiptJSON(title.value, usernames));
-    console.log(stringifiedReceipt.value);
-    // saveForm.submit();
+    // console.log(stringifiedReceipt.value);
+    saveForm.submit();
 }
