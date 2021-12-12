@@ -5,34 +5,41 @@ function validateSignUp() {
      // Verification for sign up text boxes
      username = document.data.username.value;
      pass = document.data.pass.value;
+     pass2 = document.data.pass2.value;
      first = document.data.fname.value;
      last = document.data.lname.value;
      email = document.data.email.value;
-     if (username == "" || !user.test(username)) {
+     if (username == "" || !user.test(username) || username.includes(" ")) {
           err = true;
           show("usernameVerify");
      } else {
           hide("usernameVerify");
      }
-     if (pass == "" || (pass.length < 8)) {
+     if (pass == "" || (pass.length < 8) || pass.includes(" ")) {
           err = true;
           show("passVerify");
      } else {
           hide("passVerify");
      }
-     if (first == "") {
+     if (pass != pass2) {
+          err = true;
+          show("passVerify2");
+     } else {
+          hide("passVerify2");
+     }
+     if (first == "" || first.includes(" ")) {
           err = true;
           show("fnameVerify");
      } else {
           hide("fnameVerify");
      }
-     if (last == "") {
+     if (last == "" || last.includes(" ")) {
           err = true;
           show("lnameVerify");
      } else {
           hide("lnameVerify");
      }
-     if (email == "" || !emailCheck.test(email)) {
+     if (email == "" || !emailCheck.test(email) || email.includes(" ")) {
           err = true;
           show("emailVerify");
      } else {
@@ -47,13 +54,12 @@ function validateSignIn() {
      user = document.data.username.value;
      pass = document.data.pass.value;
      // Verification for sign in text boxes
-     if (user == "" || pass == "") {
+     if (user == "" || pass == "" || user.includes(" ") || pass.includes(" ")) {
           err = true;
           show("logVal1");
      } else {
           hide("logVal1");
      }
-
      return !err
 }
 
@@ -66,13 +72,13 @@ function validateContact() {
      email = document.data.email.value;
      msg = document.data.message.value;
      // Verification for sign up text boxes
-     if (username == "" || !user.test(username)) {
+     if (username == "" || !user.test(username) || username.includes(" ")) {
           err = true;
           show("usernameVerify");
      } else {
           hide("usernameVerify");
      }
-     if (email == "" || !emailCheck.test(email)) {
+     if (email == "" || !emailCheck.test(email) || email.includes(" ")) {
           err = true;
           show("emailVerify");
      } else {

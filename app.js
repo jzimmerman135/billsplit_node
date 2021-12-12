@@ -1,84 +1,371 @@
 var express = require('express');
 const ejs = require('ejs');
 const cookieParser = require('cookie-parser');
-const app = express();
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
+const encrypt = require('./SHAcrypt.js');
+
+const MongoClient = require('mongodb').MongoClient;
+const url = "mongodb+srv://user:db1@billsplit.6feyv.mongodb.net/billsplit?retryWrites=true&w=majority";
 
 const port = 8080;
 
+const app = express();
 app.set('view engine', 'ejs');
-
 app.use(cookieParser());
 app.use(express.static('public'));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.listen(port);
 
+/*******************************
+ *        static links
+ *******************************/
 
-app.get('/', function(req, res){
+app.get('/', function (req, res) {
     res.render('pages/index');
 });
 
-app.get('/calculator', function(req, res){
+app.get('/calculator', function (req, res) {
     res.render('./pages/fullCalculator');
 });
 
-app.get('/pro', function(req,res){
+app.get('/pro', function (req, res) {
     res.render('./pages/pro');
 });
 
-app.get('/about', function(req,res){
+app.get('/about', function (req, res) {
     res.render('./pages/aboutUs');
 });
 
-app.get('/signIn', function(req, res) {
+app.get('/signIn', function (req, res) {
     res.render('./pages/signIn');
 });
 
-app.get('/signUp', function(req, res) {
+app.get('/signUp', function (req, res) {
     res.render('./pages/signup');
 });
 
-app.get('/history', function(req,res){
+app.get('/contact', function (req, res) {
+    res.render('./pages/contactUs');
+});
+
+/*******************************
+ *    cookie dependent links
+ *******************************/
+
+app.get('/history', function (req, res) {
+    cookieUser = "jzimm135" // cookie
+    MongoClient.connect(url, { useUnifiedTopology: true }, function (err, db) {
+        if (err) {
+            return "Error: not found";
+        }
+
+        var dbo = db.db("billsplit");
+        var coll = dbo.collection('receiptInfo');
+        theQuery = {}
+
+        coll.find(theQuery).toArray(function (err, items) {
+            if (err) {
+                console.log("Error: " + err); // render error page
+            }
+            for (i = 0; i < items.length; i++) {
+                for (y = 0; y < items[i].people.length; y++) {
+                    if (((items[i].people)[y].username) == cookieUser) {
+                        console.log(items[i]); // items[i] is the JSON of each user's receipt
+                    }
+                }
+            }
+            db.close();
+        });
+    });
+    req.cookies;
     // get method auto sends cookie to querystring
     // server gets cookie from querystring
     // server uses cookie to find all matching receipts
     var receipts = [];
     res.render('./pages/history', {
-        allReceipts : receipts
+        allReceipts: receipts
     });
 });
 
-app.get('/contact', function(req, res){
-    res.render('./pages/contactUs');
-})
-
 /*******************************
- * form processing links
+ *    form processing links
  *******************************/
-app.post('/save', function(req, res){
+app.post('/save', function (req, res) {
+    // Delete variables below + delete userobj variable if you already have JSON
+    // and set userObj = [JSON]
     let data = req.body;
-    let receipt = JSON.parse(data["receiptJSON"]);
+    let receipt = JSON.parse(data.receiptJSON);
     console.log(receipt);
-    res.send(receipt);
-}); 
 
-app.post('/createUser', function(req, res){
+    MongoClient.connect(url, function (err, db) {
+        if (err) {
+            console.log("Error")
+        }
+        var userObj = {
+            title: receipt.title,
+            date: receipt.date,
+            people: receipt.people,
+            tax: receipt.tax,
+            subtotal: receipt.subtotal,
+            total: receipt.total,
+            payer: receipt.payer,
+            items: receipt.items
+        }
+        var dbo = db.db("billsplit");
+        var coll = dbo.collection('receiptInfo');
+        coll.insertOne(userObj, function (err, result) {
+            if (err) {
+                console.log("receipt not saved"); // Save not successful. try again later (unlikely unless mongodb server is down)
+                res.render('./pages/message', {
+                    line1 : "Your receipt " + title + "was not saved",
+                    line2 :  "There seems to be an issue.",
+                    username : "null",
+                    saveUsernameCookie: false,
+                    returnWhere : "Home",
+                    returnHREF : "/"
+                });
+            }
+            else {
+                console.log("receipt saved successfully!") 
+                //render success page
+                res.render('./pages/message', {
+                    line1 : "Your receipt " + title + "was saved",
+                    line2 :  "Find it in 'My Receipts'.",
+                    username : "null",
+                    saveUsernameCookie: false,
+                    returnWhere : "Home",
+                    returnHREF : "/"
+                });
+            }
+        })
+        db.close
+    });
+});
+
+app.post('/createUser', function (req, res) {
     var data = req.body;
     console.log(data);
-    res.send(data);
 
-}); 
+    user = data.username; // Use get and then use encrypt function
+    rawPass = data.pass; // Use get and then use encrypt function
+    fname = data.fname;
+    lname = data.lname;
+    email = data.email;
 
+    bcrypt.hash(rawPass, saltRounds, (err, hash) => {
+        if (err) {
+            console.log("bcrypt hashing error");
+            return;
+        }
+        
+        pass = hash;
+        console.log(hash);
+        MongoClient.connect(url, function (err, db) {
+            if (err) {
+                throw err;
+            }
+            var userObj = {
+                username: user,
+                password: pass,
+                first: fname,
+                last: lname,
+                email: email
+            };
+            var dbo = db.db("billsplit");
+            var coll = dbo.collection('userInfo');
+            coll.createIndex({ username: 1 }, { unique: true });
+            coll.insertOne(userObj, function (err, result) {
+                if (err) {
+                    console.log("Username already exists");
+                    // Render a page saying username already exists
+                    res.render('./pages/message', {
+                        line1 : "Sorry, the username, " + data.username + " already exists.",
+                        line2 : "Please try a new username.",
+                        username : data.username,
+                        saveUsernameCookie: false,
+                        returnWhere : "Create Account",
+                        returnHREF : "/signUp"
+                    });
+                }
+                else {
+                    cookieUser = user;
+                    console.log("Success! Account created");
+                    // else print a page that welcoming user
+                    res.render('./pages/message', {
+                        line1 : "You have successfully created an account.",
+                        line2 : "Welcome, " + data.username + ".",
+                        username : data.username,
+                        saveUsernameCookie: true,
+                        returnWhere : "Home",
+                        returnHREF : "/"
+                    });
+                }
+            })//insertOne
+            db.close();
+        });//mongoclient
+    });//bcrypt
+});
 
-app.post('/logIn', function(req, res){
+/* bcrypt.compare version*/
+app.post('/logIn', function (req, res) {
     var data = req.body;
-    console.log(data.username);
-    console.log(data.pass);
-    res.send(data);
-}); 
+    user = data.username; 
+    rawPass = data.pass;
 
-app.post('/sendMessage', function(req, res){
+    MongoClient.connect(url, { useUnifiedTopology: true }, function (err, db) {
+        if (err) {
+            return "Error: not found";
+        }
+
+        var dbo = db.db("billsplit");
+        var coll = dbo.collection('userInfo');
+        theQuery = { username: user };
+        coll.find(theQuery).toArray(function (err, items) {
+            if (err) {
+                console.log("Error: " + err);
+                return;
+            }
+            console.log(items);
+            for (i = 0; i < items.length; i++) {
+                bcrypt.compare(rawPass, items[i].password, function (err, match){
+                    if (err){
+                        console.log("Bcrypt error");
+                        return;
+                    }
+
+                    if (match){
+                        console.log("log in success");
+                        // render welcome page
+                        res.render('./pages/message', {
+                            line1 : "Welcome, " + data.username + ".",
+                            line2 : "You are logged in.",
+                            username : data.username, //this will be automatically hashed by the storeUsername function
+                            saveUsernameCookie: true,
+                            returnWhere : "Home",
+                            returnHREF : "/"
+                        });
+                    }
+                    else {
+                        console.log("log in unsuccessful");
+                        // render incorrect login
+                        res.render('./pages/message', {
+                            line1 : "Your username or password is incorrect",
+                            line2 :  "Please try again",
+                            username : data.username,
+                            saveUsernameCookie: false,
+                            returnWhere : "Sign In",
+                            returnHREF : "/signIn"
+                        });
+                    }
+                });//bcrypt
+            }
+        });//query
+        console.log(hashedUser);
+        db.close();
+    });//mongodb
+});
+
+app.post('/sendMessage', function (req, res) {
     var data = req.body;
     console.log(data);
-    res.send(data);
+    user = encrypt.sHash(data.username); // encrypt this
+    email = data.email;
+    msg = data.message;
+
+    MongoClient.connect(url, function (err, db) {
+        if (err) {
+            throw err;
+        }
+        var userObj = {
+            username: user,
+            email: email,
+            message: message
+        }
+        var dbo = db.db("billsplit");
+        var coll = dbo.collection('contactInfo');
+        coll.insertOne(userObj, function (err, result) {
+            if (err) {
+                console.log("contact submission not entered");
+                // Save not successful (unlikely unless mongo server is down)
+                res.render('./pages/message', {
+                    line1 : "There seems to be an issue.",
+                    line2 :  "Please try again later.",
+                    username : user,
+                    saveUsernameCookie: false,
+                    returnWhere : "Home",
+                    returnHREF : "/"
+                });
+            }
+            else {
+                console.log("contact submission successful") 
+                // Render successfully sent
+                res.render('./pages/message', {
+                    line1 : "Thank you for contacting us.",
+                    line2 :  "We will get back to you shortly.",
+                    username : user,
+                    saveUsernameCookie: false,
+                    returnWhere : "Home",
+                    returnHREF : "/"
+                });
+            }
+        })
+        db.close
+    });
 }); 
+
+/* Kev's == operator version */
+// app.post('/logIn', function (req, res) {
+//     var data = req.body;
+
+//     user = data.username; // Use get and then use encrypt function
+//     rawPass = data.pass; // Use get and then use encrypt function
+//     hashedUser = "guest"; // cookie
+//     pass = hash(password); //NON FUNCTIONING!!!!!! for now
+//     MongoClient.connect(url, { useUnifiedTopology: true }, function (err, db) {
+//         if (err) {
+//             return "Error: not found";
+//         }
+
+//         var dbo = db.db("billsplit");
+//         var coll = dbo.collection('userInfo');
+//         theQuery = { username: user }
+//         coll.find(theQuery).toArray(function (err, items) {
+//             if (err) {
+//                 console.log("Error: " + err);
+//             } else {
+//                 console.log(items);
+//                 for (i = 0; i < items.length; i++) {
+//                     if (items[i].password == pass) {
+//                         console.log("log in success");
+//                         hashedUser = items[i].username; // sets cookie username to logged in username
+//                         // render welcome page
+//                         res.render('./pages/message', {
+//                             line1 : "Welcome, " + data.username + ".",
+//                             line2 : "You are logged in.",
+//                             username : data.username, //this will be automatically hashed by the storeUsername function
+//                             saveUsernameCookie: true,
+//                             returnWhere : "Home",
+//                             returnHREF : "/"
+//                         });
+//                     }
+//                 }
+//                 if (hashedUser == "guest") {
+//                     console.log("log in unsuccessful");
+//                     // render incorrect login
+//                     res.render('./pages/message', {
+//                         line1 : "Your username or password is incorrect",
+//                         line2 :  "Please try again",
+//                         username : data.username,
+//                         saveUsernameCookie: false,
+//                         returnWhere : "Sign In",
+//                         returnHREF : "/signIn"
+//                     });
+//                 }
+//             }
+//             console.log(hashedUser);
+//             db.close();
+//         });
+//     });
+// });

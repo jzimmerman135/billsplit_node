@@ -22,10 +22,10 @@ function isUserGuest(uname){
 function hash(s) {
     s = SHA256(s);
     let i = 10;
-    while (isNaN(s[i])){
+    while (isNaN(parseInt(s[i]))){
         i++;
     }
-    for (let j = 0; j < s[i]; j++) {
+    for (let j = 0; j < parseInt(s[i])+2; j++) {
         s = SHA256(s);
     }
     return s;
