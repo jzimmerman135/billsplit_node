@@ -5,89 +5,89 @@ function getExampleReceipts(userName){
     if (userName != "none") {  
         let ex_receipt0 = 
         {
-            "id": "as8943nks01",
-            "date": "12/3/2021",
-            "title" : "trader joe's groceries",
-            "users" : ["jzimm135", "ehe340", "kev12"],
-            "people" : [
+            id: "as8943nks01",
+            date: "12/3/2021",
+            title : "trader joe's groceries",
+            users : ["jzimm135", "ehe340", "kev12"],
+            people : [
                 {
-                    "name" : "Jacob",
-                    "initial" : "j",
-                    "owes" : 5.05
+                    name : "Jacob",
+                    initial : "j",
+                    owes : 5.05
                 },
                 {
-                    "name" : "Eddy",
-                    "initial" : "e",
-                    "owes" : -19.37
+                    name : "Eddy",
+                    initial : "e",
+                    owes : -19.37
                 },
                 {
-                    "name" : "Kev",
-                    "initial" : "k",
-                    "owes" : 7.16
+                    name : "Kev",
+                    initial : "k",
+                    owes : 7.16
                 },
                 {
-                    "name" : "Adnan",
-                    "initial" : "a",
-                    "owes" : 7.16
+                    name : "Adnan",
+                    initial : "a",
+                    owes : 7.16
                 }
             ],
-            "tax": 5.25,
-            "subtotal": 19,
-            "total": 19.95,
-            "payer": 1,
-            "items": [{
-                    "name": "eggs",
-                    "price": 2.50,
-                    "sharedBy": ["Jacob", "Eddy", "Kev", "Adnan"],
-                    "sharedByString": "jeka"
+            tax : 5.25,
+            subtotal : 19,
+            total : 19.95,
+            payer : 1,
+            items : [{
+                    name : "eggs",
+                    price : 2.50,
+                    sharedBy : ["Jacob", "Eddy", "Kev", "Adnan"],
+                    sharedByString : "jeka"
                 },
                 {
-                    "name": "butter",
-                    "price": 4,
-                    "sharedBy": ["Kev", "Adnan"],
-                    "sharedByString": "ka"
+                    name : "butter",
+                    price : 4,
+                    sharedBy : ["Kev", "Adnan"],
+                    sharedByString : "ka"
                 },
                 {
-                    "name": "chicken",
-                    "price": 12.50,
-                    "sharedBy": ["Jacob", "Kev", "Adnan"],
-                    "sharedByString": "jka"
+                    name : "chicken",
+                    price : 12.50,
+                    sharedBy : ["Jacob", "Kev", "Adnan"],
+                    sharedByString : "jka"
                 }
             ]
         };
         let ex_receipt1 = 
         {
-            "id": "as8943nks01",
-            "date": "12/5/2021",
-            "title" : "chipotle",
-            "users" : ["jzimm135", "ehe340", "kev12"],
-            "people" : [
+            id : "as8943nks01",
+            date : "12/5/2021",
+            title : "chipotle",
+            users : ["jzimm135", "ehe340", "kev12"],
+            people : [
                 {
-                    "name" : "Jacob",
-                    "initial" : "j",
-                    "owes" : -30.71
+                    name : "Jacob",
+                    initial : "j",
+                    owes : -30.71
                 },
                 {
-                    "name" : "Eddy",
-                    "initial" : "e",
-                    "owes" : 11.90
+                    name : "Eddy",
+                    initial : "e",
+                    owes : 11.90
                 },
                 {
-                    "name" : "Kevin",
-                    "initial" : "k",
-                    "owes" : 10.31
+                    name : "Kevin",
+                    initial : "k",
+                    owes : 10.31
                 },
                 {
-                    "name" : "Adnan",
-                    "initial" : "a",
-                    "owes" : 8.50
+                    name : "Adnan",
+                    initial : "a",
+                    owes : 8.50
                 }
             ],
-            "tax": 6.25,
-            "subtotal": 41.3,
-            "total": 43.88,
-            "payer": 0,
-            "items": [{
+            tax: 6.25,
+            subtotal: 41.3,
+            total: 43.88,
+            payer: 0,
+            items: [{
                     "name": "chicken burrito",
                     "price": 8.50,
                     "sharedBy": ["Kev"],

@@ -39,7 +39,6 @@ app.get('/signUp', function(req, res) {
 });
 
 app.get('/history', function(req,res){
-    req.cookies;
     // get method auto sends cookie to querystring
     // server gets cookie from querystring
     // server uses cookie to find all matching receipts
@@ -67,6 +66,7 @@ app.post('/createUser', function(req, res){
     var data = req.body;
     console.log(data);
     res.send(data);
+
 }); 
 
 
