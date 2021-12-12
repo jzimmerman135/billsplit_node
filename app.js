@@ -1,12 +1,24 @@
 var express = require('express');
 const ejs = require('ejs');
 const cookieParser = require('cookie-parser');
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 94d13f67fa3c95e0953144ff88d4777519fdfe97
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 const encrypt = require('./SHAcrypt.js');
 
 const MongoClient = require('mongodb').MongoClient;
 const url = "mongodb+srv://user:db1@billsplit.6feyv.mongodb.net/billsplit?retryWrites=true&w=majority";
+<<<<<<< HEAD
+=======
+=======
+const app = express();
+var MongoClient = require('mongodb').MongoClient;
+var url = "mongodb+srv://user:db1@billsplit.6feyv.mongodb.net/billsplit?retryWrites=true&w=majority";
+>>>>>>> 072ea5fe758321690c468eb7f5dd96ee27bc23d3
+>>>>>>> 94d13f67fa3c95e0953144ff88d4777519fdfe97
 
 const port = 8080;
 
@@ -46,6 +58,10 @@ app.get('/signUp', function (req, res) {
     res.render('./pages/signup');
 });
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 94d13f67fa3c95e0953144ff88d4777519fdfe97
 app.get('/contact', function (req, res) {
     res.render('./pages/contactUs');
 });
@@ -54,6 +70,11 @@ app.get('/contact', function (req, res) {
  *    cookie dependent links
  *******************************/
 
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> 072ea5fe758321690c468eb7f5dd96ee27bc23d3
+>>>>>>> 94d13f67fa3c95e0953144ff88d4777519fdfe97
 app.get('/history', function (req, res) {
     cookieUser = "jzimm135" // cookie
     MongoClient.connect(url, { useUnifiedTopology: true }, function (err, db) {
@@ -89,16 +110,46 @@ app.get('/history', function (req, res) {
     });
 });
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+app.get('/contact', function (req, res) {
+    res.render('./pages/contactUs');
+})
+
+>>>>>>> 072ea5fe758321690c468eb7f5dd96ee27bc23d3
+>>>>>>> 94d13f67fa3c95e0953144ff88d4777519fdfe97
 /*******************************
  *    form processing links
  *******************************/
 app.post('/save', function (req, res) {
     // Delete variables below + delete userobj variable if you already have JSON
     // and set userObj = [JSON]
+<<<<<<< HEAD
     let data = req.body;
     let receipt = JSON.parse(data.receiptJSON);
     console.log(receipt);
 
+=======
+<<<<<<< HEAD
+=======
+    title = "trader joes groceries"
+    date = "12/3/2021"
+    people = [
+        { username: "jzimm135", name: "Jacob", initial: "j", owes: 5.05 },
+        { username: "ehe340", name: "Eddy", initial: "e", owes: -19.37 },
+        { username: "none", name: "Adnan", initial: "a", owes: 7.16 }
+    ],
+        tax = 5.25
+    subtotal = 19
+    total = 24.25
+    payer = 1
+    items = [
+        { name: "eggs", price: 2.50, sharedBy: ["Jacob", "Eddy", "Adnan"], sharedByString: "jea" },
+        { name: "butter", price: 4, sharedBy: ["Adnan"], sharedByString: "ka" }
+    ]
+>>>>>>> 94d13f67fa3c95e0953144ff88d4777519fdfe97
     MongoClient.connect(url, function (err, db) {
         if (err) {
             console.log("Error")
@@ -142,9 +193,104 @@ app.post('/save', function (req, res) {
         })
         db.close
     });
+<<<<<<< HEAD
 });
 
 app.post('/createUser', function (req, res) {
+=======
+
+>>>>>>> 072ea5fe758321690c468eb7f5dd96ee27bc23d3
+    let data = req.body;
+    let receipt = JSON.parse(data.receiptJSON);
+    console.log(receipt);
+<<<<<<< HEAD
+
+    MongoClient.connect(url, function (err, db) {
+        if (err) {
+            console.log("Error")
+        }
+        var userObj = {
+            title: receipt.title,
+            date: receipt.date,
+            people: receipt.people,
+            tax: receipt.tax,
+            subtotal: receipt.subtotal,
+            total: receipt.total,
+            payer: receipt.payer,
+            items: receipt.items
+        }
+        var dbo = db.db("billsplit");
+        var coll = dbo.collection('receiptInfo');
+        coll.insertOne(userObj, function (err, result) {
+            if (err) {
+                console.log("receipt not saved"); // Save not successful. try again later (unlikely unless mongodb server is down)
+                res.render('./pages/message', {
+                    line1 : "Your receipt " + title + "was not saved",
+                    line2 :  "There seems to be an issue.",
+                    username : "null",
+                    saveUsernameCookie: false,
+                    returnWhere : "Home",
+                    returnHREF : "/"
+                });
+            }
+            else {
+                console.log("receipt saved successfully!") 
+                //render success page
+                res.render('./pages/message', {
+                    line1 : "Your receipt " + title + "was saved",
+                    line2 :  "Find it in 'My Receipts'.",
+                    username : "null",
+                    saveUsernameCookie: false,
+                    returnWhere : "Home",
+                    returnHREF : "/"
+                });
+=======
+    res.send(receipt);
+});
+
+app.post('/createUser', function (req, res) {
+    cookieUser = "guest" // cookie
+    user = "boundiss12"; // Use get and then use encrypt function
+    pass = "receipt1"; // Use get and then use encrypt function
+    fname = "keev"
+    lname = "ngu"
+    email = "dwadwadwa@gmail.com"
+    MongoClient.connect(url, function (err, db) {
+        if (err) {
+            throw err;
+        }
+        var userObj = {
+            username: user,
+            password: pass,
+            first: fname,
+            last: lname,
+            email: email,
+            itemsBought: [],
+            receipts: []
+        }
+        var dbo = db.db("billsplit");
+        var coll = dbo.collection('userInfo');
+        coll.createIndex({ username: 1 }, { unique: true });
+        coll.insertOne(userObj, function (err, res) {
+            if (err) {
+                console.log("username already exists"); // Render a page saying username already exists
+            }
+            else {
+                cookieUser = user;
+                console.log("success!") // else print a page that welcoming user
+>>>>>>> 072ea5fe758321690c468eb7f5dd96ee27bc23d3
+            }
+        })
+        db.close
+    });
+<<<<<<< HEAD
+});
+
+app.post('/createUser', function (req, res) {
+    var data = req.body;
+    console.log(data);
+=======
+>>>>>>> 94d13f67fa3c95e0953144ff88d4777519fdfe97
     var data = req.body;
     console.log(data);
 
@@ -154,6 +300,71 @@ app.post('/createUser', function (req, res) {
     lname = data.lname;
     email = data.email;
 
+    bcrypt.hash(rawPass, saltRounds, (err, hash) => {
+        if (err) {
+            console.log("bcrypt hashing error");
+            return;
+        }
+        
+        pass = hash;
+        console.log(hash);
+        MongoClient.connect(url, function (err, db) {
+            if (err) {
+                throw err;
+            }
+            var userObj = {
+                username: user,
+                password: pass,
+                first: fname,
+                last: lname,
+                email: email
+            };
+            var dbo = db.db("billsplit");
+            var coll = dbo.collection('userInfo');
+            coll.createIndex({ username: 1 }, { unique: true });
+            coll.insertOne(userObj, function (err, result) {
+                if (err) {
+                    console.log("Username already exists");
+                    // Render a page saying username already exists
+                    res.render('./pages/message', {
+                        line1 : "Sorry, the username, " + data.username + " already exists.",
+                        line2 : "Please try a new username.",
+                        username : data.username,
+                        saveUsernameCookie: false,
+                        returnWhere : "Create Account",
+                        returnHREF : "/signUp"
+                    });
+                }
+                else {
+                    cookieUser = user;
+                    console.log("Success! Account created");
+                    // else print a page that welcoming user
+                    res.render('./pages/message', {
+                        line1 : "You have successfully created an account.",
+                        line2 : "Welcome, " + data.username + ".",
+                        username : data.username,
+                        saveUsernameCookie: true,
+                        returnWhere : "Home",
+                        returnHREF : "/"
+                    });
+                }
+            })//insertOne
+            db.close();
+        });//mongoclient
+    });//bcrypt
+});
+>>>>>>> 072ea5fe758321690c468eb7f5dd96ee27bc23d3
+
+<<<<<<< HEAD
+/* bcrypt.compare version*/
+=======
+    user = data.username; // Use get and then use encrypt function
+    rawPass = data.pass; // Use get and then use encrypt function
+    fname = data.fname;
+    lname = data.lname;
+    email = data.email;
+
+<<<<<<< HEAD
     bcrypt.hash(rawPass, saltRounds, (err, hash) => {
         if (err) {
             console.log("bcrypt hashing error");
@@ -268,6 +479,67 @@ app.post('/logIn', function (req, res) {
 });
 
 app.post('/sendMessage', function (req, res) {
+=======
+>>>>>>> 94d13f67fa3c95e0953144ff88d4777519fdfe97
+app.post('/logIn', function (req, res) {
+    var data = req.body;
+    user = data.username; 
+    rawPass = data.pass;
+
+    MongoClient.connect(url, { useUnifiedTopology: true }, function (err, db) {
+        if (err) {
+            return "Error: not found";
+        }
+
+        var dbo = db.db("billsplit");
+        var coll = dbo.collection('userInfo');
+        theQuery = { username: user };
+        coll.find(theQuery).toArray(function (err, items) {
+            if (err) {
+                console.log("Error: " + err);
+                return;
+            }
+            console.log(items);
+            for (i = 0; i < items.length; i++) {
+                bcrypt.compare(rawPass, items[i].password, function (err, match){
+                    if (err){
+                        console.log("Bcrypt error");
+                        return;
+                    }
+
+                    if (match){
+                        console.log("log in success");
+                        // render welcome page
+                        res.render('./pages/message', {
+                            line1 : "Welcome, " + data.username + ".",
+                            line2 : "You are logged in.",
+                            username : data.username, //this will be automatically hashed by the storeUsername function
+                            saveUsernameCookie: true,
+                            returnWhere : "Home",
+                            returnHREF : "/"
+                        });
+                    }
+                    else {
+                        console.log("log in unsuccessful");
+                        // render incorrect login
+                        res.render('./pages/message', {
+                            line1 : "Your username or password is incorrect",
+                            line2 :  "Please try again",
+                            username : data.username,
+                            saveUsernameCookie: false,
+                            returnWhere : "Sign In",
+                            returnHREF : "/signIn"
+                        });
+                    }
+                });//bcrypt
+            }
+        });//query
+        console.log(hashedUser);
+        db.close();
+    });//mongodb
+});
+
+app.post('/sendMessage', function (req, res) {
     var data = req.body;
     console.log(data);
     user = encrypt.sHash(data.username); // encrypt this
@@ -313,6 +585,55 @@ app.post('/sendMessage', function (req, res) {
         })
         db.close
     });
+<<<<<<< HEAD
+=======
+>>>>>>> 072ea5fe758321690c468eb7f5dd96ee27bc23d3
+    var data = req.body;
+    console.log(data);
+    user = encrypt.sHash(data.username); // encrypt this
+    email = data.email;
+    msg = data.message;
+
+    MongoClient.connect(url, function (err, db) {
+        if (err) {
+            throw err;
+        }
+        var userObj = {
+            username: user,
+            email: email,
+            message: message
+        }
+        var dbo = db.db("billsplit");
+        var coll = dbo.collection('contactInfo');
+        coll.insertOne(userObj, function (err, result) {
+            if (err) {
+                console.log("contact submission not entered");
+                // Save not successful (unlikely unless mongo server is down)
+                res.render('./pages/message', {
+                    line1 : "There seems to be an issue.",
+                    line2 :  "Please try again later.",
+                    username : user,
+                    saveUsernameCookie: false,
+                    returnWhere : "Home",
+                    returnHREF : "/"
+                });
+            }
+            else {
+                console.log("contact submission successful") 
+                // Render successfully sent
+                res.render('./pages/message', {
+                    line1 : "Thank you for contacting us.",
+                    line2 :  "We will get back to you shortly.",
+                    username : user,
+                    saveUsernameCookie: false,
+                    returnWhere : "Home",
+                    returnHREF : "/"
+                });
+            }
+        })
+        db.close
+    });
+>>>>>>> 94d13f67fa3c95e0953144ff88d4777519fdfe97
 }); 
 
 /* Kev's == operator version */
