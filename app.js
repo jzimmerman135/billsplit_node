@@ -154,7 +154,7 @@ app.post('/createUser', function (req, res) {
     lname = data.lname;
     email = data.email;
 
-    bcrypt.hash(rawPass, saltRounds, (err, hash) => {
+    bcrypt.hashSync(rawPass, saltRounds, (err, hash) => {
         if (err) {
             console.log("bcrypt hashing error");
             return;
@@ -229,7 +229,7 @@ app.post('/logIn', function (req, res) {
             }
             console.log(items);
             for (i = 0; i < items.length; i++) {
-                bcrypt.compare(rawPass, items[i].password, function (err, match){
+                bcrypt.compareSync(rawPass, items[i].password, function (err, match){
                     if (err){
                         console.log("Bcrypt error");
                         return;
