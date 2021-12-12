@@ -90,8 +90,9 @@
         var finalTotals = []; //dummy, ignore
         var payer = -1;
         
-        // var receipts = <!% allReceipts %!>;
-        var receipts = getExampleReceipts(username);
-        createReceiptList(receipts);
+        var receiptstring = "<%- allReceipts %>"; //receive string of "{receipts: [array of receipts]}"
+        allReceipts = JSON.parse(receiptstring); //back to JSON
+        var receipts = allReceipts.receipts; //just the array
+        createReceiptList(receipts); //pass the array
     </script>
 </html>

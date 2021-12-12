@@ -61,7 +61,6 @@ app.get('/logOut', function (req, res) {
 app.post('/history', function (req, res) {
     var data = req.body;
     console.log(req.body);
-    cookieUser = data.username;
     MongoClient.connect(url, { useUnifiedTopology: true }, function (err, db) {
         if (err) {
             return "Error: not found";
@@ -69,29 +68,22 @@ app.post('/history', function (req, res) {
 
         var dbo = db.db("billsplit");
         var coll = dbo.collection('receiptInfo');
-        theQuery = {}
+        theQuery = { users : data.username}
 
         coll.find(theQuery).toArray(function (err, items) {
             if (err) {
                 console.log("Error: " + err); // render error page
             }
-            for (i = 0; i < items.length; i++) {
-                for (y = 0; y < items[i].people.length; y++) {
-                    if (((items[i].people)[y].username) == cookieUser) {
-                        console.log(items[i]); // items[i] is the JSON of each user's receipt
-                    }
-                }
-            }
+            
+            var receiptsArr = { receipts : items }; //make json with receipts: [array of receipts]
+
+            allReceiptsString = JSON.stringify(receiptsArr); //convert the json to string
+
+            res.render('./pages/history', {
+                allReceipts: allReceiptsString //send the string see history.ejs for continuation
+            });
             db.close();
         });
-    });
-    req.cookies;
-    // get method auto sends cookie to querystring
-    // server gets cookie from querystring
-    // server uses cookie to find all matching receipts
-    var receipts = [];
-    res.render('./pages/history', {
-        allReceipts: receipts
     });
 });
 
