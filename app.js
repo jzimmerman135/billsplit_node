@@ -61,6 +61,11 @@ app.get('/logOut', function (req, res) {
 app.post('/history', function (req, res) {
     var data = req.body;
     console.log(req.body);
+    if (data.username == false) {
+        console.log("user not signed in");
+        res.redirect('/');
+    }
+
     MongoClient.connect(url, { useUnifiedTopology: true }, function (err, db) {
         if (err) {
             return "Error: not found";
@@ -94,6 +99,7 @@ app.post('/save', function (req, res) {
     // Delete variables below + delete userobj variable if you already have JSON
     // and set userObj = [JSON]
     let data = req.body;
+    console.log(data);
     let receipt = JSON.parse(data.receiptJSON);
     console.log(receipt);
 
@@ -139,7 +145,7 @@ app.post('/save', function (req, res) {
                     console.log("receipt saved successfully!") 
                     //render success page
                     res.render('./pages/message', {
-                        line1 : "Your receipt " + title + "was saved",
+                        line1 : "Your receipt " + receipt.title + "was saved",
                         line2 :  "Find it in 'My Receipts'.",
                         username : "null",
                         saveUsernameCookie: false,
