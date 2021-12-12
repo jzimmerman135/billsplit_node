@@ -1,10 +1,13 @@
 var express = require('express');
 const ejs = require('ejs');
+const cookieParser = require('cookie-parser');
 const app = express();
+
 const port = 8080;
 
 app.set('view engine', 'ejs');
 
+app.use(cookieParser());
 app.use(express.static('public'));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -36,7 +39,14 @@ app.get('/signUp', function(req, res) {
 });
 
 app.get('/history', function(req,res){
-    res.render('./pages/history');
+    req.cookies;
+    // get method auto sends cookie to querystring
+    // server gets cookie from querystring
+    // server uses cookie to find all matching receipts
+    var receipts = [];
+    res.render('./pages/history', {
+        allReceipts : receipts
+    });
 });
 
 app.get('/contact', function(req, res){
@@ -62,7 +72,8 @@ app.post('/createUser', function(req, res){
 
 app.post('/logIn', function(req, res){
     var data = req.body;
-    console.log(data);
+    console.log(data.username);
+    console.log(data.pass);
     res.send(data);
 }); 
 

@@ -836,33 +836,33 @@ function makeReceiptJSON(title, usernames) {
     var finalPeople = new Array();
     for (let i = 0; i < names.length; i++) {
         let personJSON = {
-            "name" : names[i],
-            "initial" : initials[i],
-            "owes" : finalTotals[i]
+            name : names[i],
+            initial : initials[i],
+            owes : finalTotals[i]
         };
         finalPeople.push(personJSON);
     }
     var finalItems = new Array()
     for (let i = 0; i < items.length; i++) {
         let itemJSON = {
-            "name" : items[i],
-            "price" : parseFloat(prices[i]).toFixed(2),
-            "sharedBy" : makeSharedByArray(i),
-            "sharedByString" : sharedBy[i]
+            name : items[i],
+            price : parseFloat(prices[i]).toFixed(2),
+            sharedBy : makeSharedByArray(i),
+            sharedByString : sharedBy[i]
         };
         finalItems.push(itemJSON);
     }
     let day = new Date();
     var receiptJSON  =  {
-        "date": (day.getMonth() + 1) + "/" + day.getDate() + "/" + day.getFullYear(),
-        "title" : title,
-        "people" : finalPeople,
-        "users" : usernames,
-        "tax": ((tax - 1) * 100).toFixed(2),
-        "subtotal": parseFloat(sum(totals)).toFixed(2) ,
-        "total": netTotal,
-        "payer": payer,
-        "items": finalItems
+        date : (day.getMonth() + 1) + "/" + day.getDate() + "/" + day.getFullYear(),
+        title : title,
+        people : finalPeople,
+        users : usernames,
+        tax : ((tax - 1) * 100).toFixed(2),
+        subtotal : parseFloat(sum(totals)).toFixed(2) ,
+        total : netTotal,
+        payer : payer,
+        items : finalItems
     };
 
     return receiptJSON;
