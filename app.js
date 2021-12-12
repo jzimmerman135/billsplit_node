@@ -1,6 +1,5 @@
 var express = require('express');
 const ejs = require('ejs');
-const cookieParser = require('cookie-parser');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 const encrypt = require('./SHAcrypt.js');
@@ -12,7 +11,6 @@ const port = 8080;
 
 const app = express();
 app.set('view engine', 'ejs');
-app.use(cookieParser());
 app.use(express.static('public'));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
