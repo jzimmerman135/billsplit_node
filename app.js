@@ -50,12 +50,18 @@ app.get('/contact', function (req, res) {
     res.render('./pages/contactUs');
 });
 
+app.get('/logOut', function (req, res) {
+    res.render('./pages/logOut');
+});
+
 /*******************************
  *    cookie dependent links
  *******************************/
 
-app.get('/history', function (req, res) {
-    cookieUser = "jzimm135" // cookie
+app.post('/history', function (req, res) {
+    var data = req.body;
+    console.log(req.body);
+    cookieUser = data.username;
     MongoClient.connect(url, { useUnifiedTopology: true }, function (err, db) {
         if (err) {
             return "Error: not found";
@@ -101,45 +107,56 @@ app.post('/save', function (req, res) {
 
     MongoClient.connect(url, function (err, db) {
         if (err) {
-            console.log("Error")
+            console.log("database connection error");
+            res.render('./pages/message', {
+                line1 : "Sorry, there seems to be a problem.",
+                line2 : "Please try again later.",
+                username : "null",
+                saveUsernameCookie: false,
+                returnWhere : "Calculator",
+                returnHREF : "/calculator"
+            });
         }
-        var userObj = {
-            title: receipt.title,
-            date: receipt.date,
-            people: receipt.people,
-            tax: receipt.tax,
-            subtotal: receipt.subtotal,
-            total: receipt.total,
-            payer: receipt.payer,
-            items: receipt.items
+        else {
+            var userObj = {
+                title: receipt.title,
+                users: receipt.users,
+                date: receipt.date,
+                people: receipt.people,
+                tax: receipt.tax,
+                subtotal: receipt.subtotal,
+                total: receipt.total,
+                payer: receipt.payer,
+                items: receipt.items
+            };
+            var dbo = db.db("billsplit");
+            var coll = dbo.collection('receiptInfo');
+            coll.insertOne(userObj, function (err, result) {
+                if (err) {
+                    console.log("receipt not saved"); // Save not successful. try again later (unlikely unless mongodb server is down)
+                    res.render('./pages/message', {
+                        line1 : "Your receipt " + title + "was not saved",
+                        line2 :  "There seems to be an issue.",
+                        username : "null",
+                        saveUsernameCookie: false,
+                        returnWhere : "Home",
+                        returnHREF : "/"
+                    });
+                }
+                else {
+                    console.log("receipt saved successfully!") 
+                    //render success page
+                    res.render('./pages/message', {
+                        line1 : "Your receipt " + title + "was saved",
+                        line2 :  "Find it in 'My Receipts'.",
+                        username : "null",
+                        saveUsernameCookie: false,
+                        returnWhere : "Home",
+                        returnHREF : "/"
+                    });
+                }
+            });
         }
-        var dbo = db.db("billsplit");
-        var coll = dbo.collection('receiptInfo');
-        coll.insertOne(userObj, function (err, result) {
-            if (err) {
-                console.log("receipt not saved"); // Save not successful. try again later (unlikely unless mongodb server is down)
-                res.render('./pages/message', {
-                    line1 : "Your receipt " + title + "was not saved",
-                    line2 :  "There seems to be an issue.",
-                    username : "null",
-                    saveUsernameCookie: false,
-                    returnWhere : "Home",
-                    returnHREF : "/"
-                });
-            }
-            else {
-                console.log("receipt saved successfully!") 
-                //render success page
-                res.render('./pages/message', {
-                    line1 : "Your receipt " + title + "was saved",
-                    line2 :  "Find it in 'My Receipts'.",
-                    username : "null",
-                    saveUsernameCookie: false,
-                    returnWhere : "Home",
-                    returnHREF : "/"
-                });
-            }
-        })
         db.close
     });
 });
@@ -147,63 +164,66 @@ app.post('/save', function (req, res) {
 app.post('/createUser', function (req, res) {
     var data = req.body;
     console.log(data);
+    rawPass = data.pass;
 
-    user = data.username; // Use get and then use encrypt function
-    rawPass = data.pass; // Use get and then use encrypt function
-    fname = data.fname;
-    lname = data.lname;
-    email = data.email;
-
-    bcrypt.hashSync(rawPass, saltRounds, (err, hash) => {
+    bcrypt.hash(rawPass, saltRounds, (err, hash) => {
         if (err) {
             console.log("bcrypt hashing error");
             return;
         }
-        
-        pass = hash;
+
         console.log(hash);
+        var userObj = {
+            username: data.username,
+            password: hash,
+            first: data.fname,
+            last: data.lname,
+            email: data.email
+        };
+        
         MongoClient.connect(url, function (err, db) {
             if (err) {
-                throw err;
+                console.log("database connection error");
+                res.render('./pages/message', {
+                    line1 : "Sorry, there seems to be a problem.",
+                    line2 : "Please try again later.",
+                    username : "null",
+                    saveUsernameCookie: false,
+                    returnWhere : "Create Account",
+                    returnHREF : "/signUp"
+                });
             }
-            var userObj = {
-                username: user,
-                password: pass,
-                first: fname,
-                last: lname,
-                email: email
-            };
-            var dbo = db.db("billsplit");
-            var coll = dbo.collection('userInfo');
-            coll.createIndex({ username: 1 }, { unique: true });
-            coll.insertOne(userObj, function (err, result) {
-                if (err) {
-                    console.log("Username already exists");
-                    // Render a page saying username already exists
-                    res.render('./pages/message', {
-                        line1 : "Sorry, the username, " + data.username + " already exists.",
-                        line2 : "Please try a new username.",
-                        username : data.username,
-                        saveUsernameCookie: false,
-                        returnWhere : "Create Account",
-                        returnHREF : "/signUp"
-                    });
-                }
-                else {
-                    cookieUser = user;
-                    console.log("Success! Account created");
-                    // else print a page that welcoming user
-                    res.render('./pages/message', {
-                        line1 : "You have successfully created an account.",
-                        line2 : "Welcome, " + data.username + ".",
-                        username : data.username,
-                        saveUsernameCookie: true,
-                        returnWhere : "Home",
-                        returnHREF : "/"
-                    });
-                }
-            })//insertOne
-            db.close();
+            else { //connected to db
+                var dbo = db.db("billsplit");
+                var coll = dbo.collection('userInfo');
+                coll.createIndex({ username: 1 }, { unique: true });
+                coll.insertOne(userObj, function (err, result) {
+                    if (err) { //non unique entry
+                        console.log(err);
+                        console.log("Username already exists");
+                        res.render('./pages/message', {
+                            line1 : "Sorry, the username, " + data.username + " already exists.",
+                            line2 : "Please try a new username.",
+                            username : "null",
+                            saveUsernameCookie: false,
+                            returnWhere : "Create Account",
+                            returnHREF : "/signUp"
+                        });
+                    }
+                    else { //successful insertion
+                        console.log("Success! Account created");
+                        res.render('./pages/message', {
+                            line1 : "You have successfully created an account.",
+                            line2 : "Welcome, " + userObj.username + ".",
+                            username : userObj.username,
+                            saveUsernameCookie: true,
+                            returnWhere : "Home",
+                            returnHREF : "/"
+                        });
+                        db.close();
+                    }
+                });//insertOne
+            }
         });//mongoclient
     });//bcrypt
 });
@@ -213,86 +233,103 @@ app.post('/logIn', function (req, res) {
     var data = req.body;
     user = data.username; 
     rawPass = data.pass;
+    console.log(data);
 
     MongoClient.connect(url, { useUnifiedTopology: true }, function (err, db) {
         if (err) {
-            return "Error: not found";
+            console.log("database connection error");
+            res.render('./pages/message', {
+                line1 : "Sorry, there seems to be a problem.",
+                line2 : "Please try again later.",
+                username : "null",
+                saveUsernameCookie: false,
+                returnWhere : "Sign In",
+                returnHREF : "/signIn"
+            });
         }
+        else {
+            var dbo = db.db("billsplit");
+            var coll = dbo.collection('userInfo');
+            theQuery = { username: user };
+            coll.find(theQuery).toArray(function (err, items) {
+                if (err) {
+                    console.log("Query error: " + err);
+                    return;
+                }
+                console.log(items);
+                for (i = 0; i < items.length; i++) {
+                    bcrypt.compare(rawPass, items[i].password, function (err, match){
+                        if (err){
+                            console.log("Bcrypt error: " + err);
+                            return;
+                        }
 
-        var dbo = db.db("billsplit");
-        var coll = dbo.collection('userInfo');
-        theQuery = { username: user };
-        coll.find(theQuery).toArray(function (err, items) {
-            if (err) {
-                console.log("Error: " + err);
-                return;
-            }
-            console.log(items);
-            for (i = 0; i < items.length; i++) {
-                bcrypt.compareSync(rawPass, items[i].password, function (err, match){
-                    if (err){
-                        console.log("Bcrypt error");
-                        return;
-                    }
-
-                    if (match){
-                        console.log("log in success");
-                        // render welcome page
-                        res.render('./pages/message', {
-                            line1 : "Welcome, " + data.username + ".",
-                            line2 : "You are logged in.",
-                            username : data.username, //this will be automatically hashed by the storeUsername function
-                            saveUsernameCookie: true,
-                            returnWhere : "Home",
-                            returnHREF : "/"
-                        });
-                    }
-                    else {
-                        console.log("log in unsuccessful");
-                        // render incorrect login
-                        res.render('./pages/message', {
-                            line1 : "Your username or password is incorrect",
-                            line2 :  "Please try again",
-                            username : data.username,
-                            saveUsernameCookie: false,
-                            returnWhere : "Sign In",
-                            returnHREF : "/signIn"
-                        });
-                    }
-                });//bcrypt
-            }
-        });//query
-        console.log(hashedUser);
-        db.close();
+                        if (match){
+                            console.log("log in success");
+                            // render welcome page
+                            res.render('./pages/message', {
+                                line1 : "Welcome, " + data.username + ".",
+                                line2 : "You are logged in.",
+                                username : data.username, //this will be automatically hashed by the storeUsername function
+                                saveUsernameCookie: true,
+                                returnWhere : "Home",
+                                returnHREF : "/"
+                            });
+                        }
+                        else {
+                            console.log("log in unsuccessful");
+                            // render incorrect login
+                            res.render('./pages/message', {
+                                line1 : "Your username or password is incorrect",
+                                line2 :  "Please try again",
+                                username : data.username,
+                                saveUsernameCookie: false,
+                                returnWhere : "Sign In",
+                                returnHREF : "/signIn"
+                            });
+                            
+                        }
+                    });//bcrypt
+                }
+                db.close();
+            });//mongo query
+        }
     });//mongodb
 });
 
 app.post('/sendMessage', function (req, res) {
     var data = req.body;
     console.log(data);
-    user = encrypt.sHash(data.username); // encrypt this
-    email = data.email;
-    msg = data.message;
 
     MongoClient.connect(url, function (err, db) {
         if (err) {
-            throw err;
+            console.log("database connection error");
+            res.render('./pages/message', {
+                line1 : "Sorry, there seems to be a problem.",
+                line2 : "Please try again later.",
+                username : "null",
+                saveUsernameCookie: false,
+                returnWhere : "Contact Us",
+                returnHREF : "/contact"
+            });
         }
+
         var userObj = {
-            username: user,
-            email: email,
-            message: message
+            username: data.username,
+            email: data.email,
+            message: data.message
         }
+    
         var dbo = db.db("billsplit");
         var coll = dbo.collection('contactInfo');
         coll.insertOne(userObj, function (err, result) {
             if (err) {
-                console.log("contact submission not entered");
+                console.log("contact us submission not entered");
                 // Save not successful (unlikely unless mongo server is down)
                 res.render('./pages/message', {
                     line1 : "There seems to be an issue.",
                     line2 :  "Please try again later.",
-                    username : user,
+                    username : "null",
                     saveUsernameCookie: false,
                     returnWhere : "Home",
                     returnHREF : "/"
@@ -304,16 +341,16 @@ app.post('/sendMessage', function (req, res) {
                 res.render('./pages/message', {
                     line1 : "Thank you for contacting us.",
                     line2 :  "We will get back to you shortly.",
-                    username : user,
+                    username : "null",
                     saveUsernameCookie: false,
                     returnWhere : "Home",
                     returnHREF : "/"
                 });
+                db.close();
             }
         })
-        db.close
     });
-}); 
+});
 
 /* Kev's == operator version */
 // app.post('/logIn', function (req, res) {

@@ -75,7 +75,8 @@
     <!-- Page Executable -->
     <script>
         //vscode thinks there is a problem here, but there is not!
-        if ( <%= saveUsernameCookie %> ) {
+        var truth = "<%= saveUsernameCookie %>"
+        if ( truth == "true" ) {
             console.log("MAKING COOKIE");
             storeUsername( "<%= username %>" );
         }

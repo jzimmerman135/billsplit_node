@@ -79,3 +79,8 @@
     function showNav() {
         document.getElementById("dropMenu").style.transform = "translateX(0%)";        
     }
+
+    function getHistory() {
+        document.myhistory.username.value = username;
+        document.myhistory.submit();
+    }

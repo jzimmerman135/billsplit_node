@@ -123,24 +123,47 @@ app.post('/save', function (req, res) {
 app.post('/createUser', function (req, res) {
      var userObj = req.body;
      console.log(userObj);
-     userObj.username = userObj.username // use hash function on right variable
-     userObj.pass = userObj.pass; // use hash function on right variable
+     //hash password;
+      // use hash function on right variable
+     //connect to database
      MongoClient.connect(url, function (err, db) {
           if (err) {
-               console.log("db not working") //database problem pls try again later
+               console.log("db not working"); //database problem pls try again later
+               return;
           }
+          
+          bcrypt.hashSync(userObj.pass, saltRounds, function(err, hash) {
+               if (err) {
+                    console.log("bcrypt error");
+                    return;
+               }
+               console.log("hash");
+               userObj.pass = hash;
+          });
+
           var dbo = db.db("billsplit");
           var coll = dbo.collection('userInfo');
           coll.createIndex({ username: 1 }, { unique: true });
           coll.insertOne(userObj, function (err, res) {
                if (err) {
-                    console.log("db not working") //database problem pls try again later
+                    console.log("db not working"); //database problem pls try again later
+                    console.log("Username already exists");
+                    // Render a page saying username already exists
+                    res.render('./pages/message', {
+                        line1 : "Sorry, the username, " + data.username + " already exists.",
+                        line2 : "Please try a new username.",
+                        username : data.username,
+                        saveUsernameCookie: false,
+                        returnWhere : "Create Account",
+                        returnHREF : "/signUp"
+                    });
+                    return;
                }
                else {
                     console.log("success"); // successful
                     // cookieUser = userObj.username; get cookie user variable set hashed cookie user to whatever we got
                }
-          })
+          });//insert
           db.close
      });
 });
@@ -148,8 +171,8 @@ app.post('/createUser', function (req, res) {
 app.post('/logIn', function (req, res) {
      var data = req.body;
      console.log(data)
-     user = userObj.username // use hash function on right variable
-     pass = userObj.pass; // use hash function on right variable
+     user = data.username // use hash function on right variable
+     pass = data.pass; // use hash function on right variable
      MongoClient.connect(url, { useUnifiedTopology: true }, function (err, db) {
           if (err) {
                console.log("db not working") //database problem pls try again later
