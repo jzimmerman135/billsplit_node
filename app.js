@@ -79,11 +79,11 @@ app.post('/history', function (req, res) {
             if (err) {
                 console.log("Error: " + err); // render error page
             }
-            
+            console.log("retrieved from database " + items);
             var receiptsArr = { receipts : items }; //make json with receipts: [array of receipts]
-
+            console.log("receipts arr " + receiptsArr);
             allReceiptsString = JSON.stringify(receiptsArr); //convert the json to string
-
+            console.log("to string " + allReceiptsString);
             res.render('./pages/history', {
                 allReceipts: allReceiptsString //send the string see history.ejs for continuation
             });
