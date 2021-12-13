@@ -1,6 +1,6 @@
 var express = require('express');
 const ejs = require('ejs');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const saltRounds = 10;
 const encrypt = require('./SHAcrypt.js');
 
