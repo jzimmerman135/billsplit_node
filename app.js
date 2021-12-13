@@ -48,8 +48,7 @@ app.get('/contact', function (req, res) {
     res.render('./pages/contactUs');
 });
 
-app.get('/tutorial', function (req, res) {
-    console.log("called");
+app.get('/faq', function (req, res) {
     res.render('./pages/howTo');
 });
 
