@@ -254,7 +254,7 @@ app.post('/logIn', function (req, res) {
                 }
                 console.log(items);
                 if (items.length == 0){
-                    console.log("log in unsuccessful");
+                    console.log("username not found");
                     // render incorrect username
                     res.render('./pages/message', {
                         line1 : "Your username is incorrect",
@@ -286,7 +286,7 @@ app.post('/logIn', function (req, res) {
                         }
                         if (!match) {
                             console.log("log in unsuccessful");
-                            // render incorrect login
+                            // render incorrect password
                             res.render('./pages/message', {
                                 line1 : "Your password is incorrect",
                                 line2 :  "Please try again",
