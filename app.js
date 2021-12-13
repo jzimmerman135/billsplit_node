@@ -131,7 +131,7 @@ app.post('/save', function (req, res) {
                 if (err) {
                     console.log("receipt not saved"); // Save not successful. try again later (unlikely unless mongodb server is down)
                     res.render('./pages/message', {
-                        line1 : "Your receipt " + title + "was not saved",
+                        line1 : "Your receipt " + title + " was not saved",
                         line2 :  "There seems to be an issue.",
                         username : "null",
                         saveUsernameCookie: false,
@@ -143,7 +143,7 @@ app.post('/save', function (req, res) {
                     console.log("receipt saved successfully!") 
                     //render success page
                     res.render('./pages/message', {
-                        line1 : "Your receipt " + receipt.title + "was saved",
+                        line1 : "Your receipt " + receipt.title + " was saved",
                         line2 :  "Find it in 'My Receipts'.",
                         username : "null",
                         saveUsernameCookie: false,
