@@ -89,6 +89,10 @@
                 color: rgb(255,0,0);
                 display: none;
            }
+        input[type=checkbox].show {
+            width: 0.8rem;
+            margin-left: 12ch;
+        }
     </style>
     
 </head>
@@ -97,9 +101,9 @@
     <div id="pageContainer">
         <!-- HEADER STUFF, CAN IGNORE -->
         <%- include('../partials/_nav') %>
-
+        <!-- <div style="margin-bottom: 35px;"></div> -->
         <!-- ALL PAGE CONTENT HERE -->
-        <div style="width: 100%; display: flex; justify-content: center; padding-top: 100px;">
+        <div style="width: 100%; display: flex; justify-content: center; padding-top: 150px;">
             <div class="fillout">
                 <h1>Sign Up</h1>
                 <div>
@@ -111,12 +115,12 @@
                     <section>
                         <h2>Password: <input type="password"  name='pass' placeholder="At least 8 characters"/></h2>
                         <p class="verify" id = "passVerify">Passwords must be at least 8 characters long. Please enter a valid password.</p>
+                        <input class="show" type="checkbox" onclick="showPassword()"><span style="color:var(--text_main); font-size:18px">Show password</span>
                     </section>
-                    <section>
+                    <!-- <section>
                         <h2>Re-enter <br> Password: <input type="password"  name='pass2' placeholder="Passwords must match"/></h2>
                         <p class="verify" id = "passVerify2">Passwords do not match.</p>
-                    </section>
-                    <br>
+                    </section> -->
                     <section>
                         <h2>First Name: <input type="text"  name='fname'/></h2>
                         <p class="verify" id = "fnameVerify">Please enter your first name.</P>
@@ -140,7 +144,7 @@
                 </div>
             </div>
         </div>       
-        
+        <div style="margin-bottom: 1rem;"> </div>
         <!-- FOOTER CAN IGNORE -->
         <%- include('../partials/_footer') %>
     

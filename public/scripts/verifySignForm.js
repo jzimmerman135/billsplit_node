@@ -5,7 +5,6 @@ function validateSignUp() {
      // Verification for sign up text boxes
      username = document.data.username.value;
      pass = document.data.pass.value;
-     pass2 = document.data.pass2.value;
      first = document.data.fname.value;
      last = document.data.lname.value;
      email = document.data.email.value;
@@ -20,12 +19,6 @@ function validateSignUp() {
           show("passVerify");
      } else {
           hide("passVerify");
-     }
-     if (pass != pass2) {
-          err = true;
-          show("passVerify2");
-     } else {
-          hide("passVerify2");
      }
      if (first == "" || first.includes(" ")) {
           err = true;
@@ -115,4 +108,13 @@ function checkLogin(username, password) {
 
 function insertMsg(jsonMsg) {
      alert(jsonMsg);
+}
+
+function showPassword() {
+     var x = document.getElementsByName("pass")[0];
+  if (x.type === "password") {
+    x.type = "text";
+  } else {
+    x.type = "password";
+  }
 }

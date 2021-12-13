@@ -32,6 +32,7 @@
 }
 
 .receiptsList li {
+    cursor: pointer;
     background: var(--bg_white);
     padding: 0.5rem;
     border-radius: 0.3rem;
@@ -128,7 +129,6 @@
 }
 
 .receiptWrap {
-    
     justify-content: center;
 }
 
@@ -172,4 +172,14 @@
 .remaining #totalsRow {
     margin-left: auto;
     margin-right: auto;
+}
+
+
+@media screen and (max-width:600px) {
+    .receiptSlide {
+        max-width: 100vw;
+    }
+    .receiptWrap {
+        max-width: 100vw;
+    }
 }
