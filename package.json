@@ -1,6 +1,6 @@
 {
   "name": "billsplit",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Ultimate receipt splitting experience",
   "dependencies": {
     "bcrypt": "^5.0.1",
