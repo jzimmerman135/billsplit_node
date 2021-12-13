@@ -879,7 +879,7 @@ function addSharedUser() {
     }
     let x = document.createElement("input");
     x.value = "";
-    x.placeholder = "e.g. friend.user@example.com"
+    x.placeholder = "e.g. username112"
     x.name = "sharedUser";
     saveForm.appendChild(x);
 }

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <%- include('../partials/_header') %>
+    <title>Billsplit - About</title>
+    <!-- LINKS TO EXTERNAL STYLESHEETS
+            format: href="/stylesheets/example.css" -->
+    <link rel="stylesheet" href="/stylesheets/howTo.css">
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <style>
+        /* page specific style declarations */
+    </style>
+    
+</head>
+    
+<body>
+    <div id="pageContainer">
+        <!-- HEADER STUFF, CAN IGNORE -->
+        <%- include('../partials/_nav') %>
+
+        <!-- ALL PAGE CONTENT INSIDE HERE -->
+        <div class="container" style="margin-top: 2.5rem;"> 
+            <section>
+                <div class="accordian">
+                     <div class="accordianItem" id = "question1">
+                         <a class = "accordian-link" href = "#question1"> 
+                             How do I start splitting a bill?
+                             <ion-icon name="add-circle-outline"></ion-icon>
+                             
+                         </a>
+                         <div class="answer">
+                            <p>From the homepage, you can either click "Get Started" or "Split a Receipt"</p>
+                         </div>
+                     </div>
+                     <div class="accordianItem" id = "question2">
+                         <a class = "accordian-link" href = "#question2"> 
+                             How do I add people?
+                             <ion-icon name="add-circle-outline"></ion-icon>
+                             
+                         </a>
+                         <div class="answer">
+                            <p>Once you are at the calculator, type in someone's name and hit ENTER to add another person. Once you have everyone, click FINISH </p>
+                         </div>
+                     </div>
+                     <div class="accordianItem" id = "question3">
+                         <a class = "accordian-link" href = "#question3"> 
+                               What if I made a mistake inputting names/items?
+                             <ion-icon name="add-circle-outline"></ion-icon>
+                             
+                         </a>
+                         <div class="answer">
+                              <p>If you make a mistake, double click on anything to make edit it, you can also use the back button to visit a previous section</p>
+                         </div>
+                     </div>
+                     <div class="accordianItem" id = "question4">
+                         <a class = "accordian-link" href = "#question4"> 
+                             What if not everyone is sharing an item?
+                             <ion-icon name="add-circle-outline"></ion-icon>                        
+                         </a>
+                         <div class="answer">
+                              <p>After inputting an item, simply type in the initials of each person whom it's shared by, alternatively you can type 'all - jb' to exclude j, b. </p>
+                         </div>
+                     </div>
+                     <div class="accordianItem" id = "question5">
+                         <a class = "accordian-link" href = "#question5"> 
+                             What if an item isn't being shared equally?
+                             <ion-icon name="add-circle-outline"></ion-icon>
+                             
+                         </a>
+                         <div class="answer">
+                            <p>To split an item unevenly, just type the same initial multiple times. For example, if John is using 2/3 of the eggs and Mary is using 1/3 of the eggs, you can type "jjm".</p>
+                         </div>
+                     </div>
+                </div>
+            </section>
+        </div>
+        
+        
+        
+        <!-- FOOTER CAN IGNORE -->
+        <%- include('../partials/_footer') %>
+    </div>
+    
+</body> 
+    <!-- get username information, sorry it's named guestUser
+            gives access to set and delete username functions -->
+    <%- include('../partials/_guestUser') %>
+
+    <!-- LINKS TO EXTERNAL FUNCTION SCRIPTS
+         format: src"/scripts/example.js" --> 
+    
+    <!-- Page Executable -->
+    <script language="javascript">
+        $(document).scroll(function(){
+          $("div.hidden").css('opacity','1')
+        })
+        
+    </script>
+</html>

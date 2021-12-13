@@ -48,6 +48,11 @@ app.get('/contact', function (req, res) {
     res.render('./pages/contactUs');
 });
 
+app.get('/tutorial', function (req, res) {
+    console.log("called");
+    res.render('./pages/howTo');
+});
+
 app.get('/logOut', function (req, res) {
     res.render('./pages/logOut');
 });
