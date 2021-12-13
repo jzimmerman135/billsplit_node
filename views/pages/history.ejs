@@ -104,8 +104,8 @@
         var totals = [];
         var finalTotals = []; //dummy, ignore
         var payer = -1;
-        
-        var recentClick = false;
+
+        var sliding = false;
 
         var receiptstring = <%- allReceipts %>; //receive string of {receipts: [array of receipts]}
         console.log("receiptstring " + receiptstring);

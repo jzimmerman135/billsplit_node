@@ -159,24 +159,20 @@ function addReceipt(receipt){
         highlightPayer(sharedDiv, receipt);
     }
     newReceipt.appendChild(sharedDiv);
-    newReceipt.onclick = function () { showReceipt(receipt) };
-    
+    newReceipt.onclick = function () {
+        if (sliding) {return}; 
+        console.log("click disabled");
+        document.body.style.pointerEvents = "none";
+        showReceipt(receipt) };
     return newReceipt;
 };
 
 function showReceipt(receipt) {
-    if (!recentClick){
-        recentClick = true;
-        console.log("click is" + recentClick);
-        showFullReceipt(receipt);
-        setTimeout(() => {
-            recentClick = false;
-            console.log("timer: click is now" + recentClick);
-        }, 1200);
-    }
-    else {
-        return;
-    }
+    showFullReceipt(receipt);
+    setTimeout(() => {
+        document.body.style.pointerEvents = "auto";
+        console.log("click enabled");
+    }, 1000);
 }
 
 function createReceiptTitle(value, class_name){
@@ -214,7 +210,11 @@ function highlightPayer(x, receipt) {
 
 function showFullReceipt(receipt){
     populateReceipt(receipt);
+    sliding = true;
     document.getElementById("slider").style.transform = "translateX(-50%)";
+    setTimeout(() => {
+        sliding = false;
+    }, 500);
 }
 
 function slideBack() {
