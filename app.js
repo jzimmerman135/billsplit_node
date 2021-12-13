@@ -253,13 +253,25 @@ app.post('/logIn', function (req, res) {
                     return;
                 }
                 console.log(items);
+                if (items.length == 0){
+                    console.log("log in unsuccessful");
+                    // render incorrect username
+                    res.render('./pages/message', {
+                        line1 : "Your username is incorrect",
+                        line2 :  "Please try again",
+                        username : data.username,
+                        saveUsernameCookie: false,
+                        returnWhere : "Sign In",
+                        returnHREF : "/signIn"
+                    });
+                }
                 for (i = 0; i < items.length; i++) {
                     bcrypt.compare(rawPass, items[i].password, function (err, match){
                         if (err){
                             console.log("Bcrypt error: " + err);
                             return;
                         }
-
+                        console.log(match);
                         if (match){
                             console.log("log in success");
                             // render welcome page
@@ -272,18 +284,17 @@ app.post('/logIn', function (req, res) {
                                 returnHREF : "/"
                             });
                         }
-                        else {
+                        if (!match) {
                             console.log("log in unsuccessful");
                             // render incorrect login
                             res.render('./pages/message', {
-                                line1 : "Your username or password is incorrect",
+                                line1 : "Your password is incorrect",
                                 line2 :  "Please try again",
                                 username : data.username,
                                 saveUsernameCookie: false,
                                 returnWhere : "Sign In",
                                 returnHREF : "/signIn"
                             });
-                            
                         }
                     });//bcrypt
                 }
