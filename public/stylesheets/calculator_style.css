@@ -41,6 +41,7 @@ input {
 
 #welcome {
     font-family: "Roboto Slab";
+    font-weight: 300;
     opacity: 0.8;
     color: var(--text_dark);
     text-align: center;

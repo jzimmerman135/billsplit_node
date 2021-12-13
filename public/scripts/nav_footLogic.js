@@ -53,9 +53,18 @@
     
     //opens the menu on hover
     function openNav() {
-        document.getElementById("dropMenu").style.display = "flex"; 
+        if (document.getElementById("dropMenu").style.display == "none"){
+            document.getElementById("dropMenu").style.display = "flex"; 
+            setTimeout(() => {
+                cancelClose();
+                showNav();
+                return;
+            }, 50);
+        }
+        else {
         cancelClose();
         showNav();
+        }
     }
 
     //waits 0.75s to close menu when mouse leaves

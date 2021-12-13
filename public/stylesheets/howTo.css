@@ -51,7 +51,7 @@
 .panel p {
     padding-top: 15px;
     color: var(--text_main);
-    max-width: 40ch;
+    max-width: 45ch;
     padding-bottom: 5px;
     font-size: 20px;
 }

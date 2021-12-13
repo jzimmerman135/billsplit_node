@@ -1,12 +1,21 @@
 .toppic{
-  width: 50%;
+  background-color: var(--text_dark_low_opacity);
+  width: 100%;
   padding: 25px;
   margin: auto;
   text-align: center;
-  font-family: "Capsule Sans Display",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  font-family: "Roboto Slab";
+  font-weight: 600;
   color: #FFFFFE;
+  justify-content: center;
 }
 
+.toppic div {
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  width: 50%;
+}
 
 .topimage{
   background-image:url('/groceryfin.jpg');
@@ -27,18 +36,20 @@
 
 .founders{
   width: 100%;
-  padding:10px;
-  border: 1px solid rgba(0, 0, 0, 0.5);
+  padding:2rem;
+  border-top: 4px solid var(--text_dark_low_opacity);
   margin: auto;
   background-color: rgb(225,235,220);
-  background-color: #8ee4af54;
+  opacity: 0.9;
+  background-color: var(--bg_accent_light);
   font-family: "Capsule Sans Display",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
 }
 
 .descriptions{
   width: 50%;
-  font-size: 15px;
+  font-size: 70%;
   float:left;
+  line-height:1.2rem;
 }
 
 .flex-container1, .flex-container2{
@@ -91,6 +102,10 @@ p{
 
 .founderpic img{
   width: 45%;
+  image-rendering: optimizeSpeed;
+  object-fit: cover;
+  border-radius: 0.25rem;
+  border: 5px solid var(--text_dark_low_opacity);
   float:right;
 }
 
