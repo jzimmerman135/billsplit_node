@@ -146,6 +146,7 @@ function createReceiptList(receipts){
 //and the index of which receipt it is working on relative to the receipts array
 function addReceipt(receipt){
     let newReceipt = document.createElement("li"); 
+    newReceipt.className = "oldReceipt";
     let title = createReceiptTitle(receipt.title, "receiptTitle");
     let date = createReceiptTitle(" on " + receipt.date, "receiptDate");
     let sharedDiv = document.createElement("div");
@@ -158,9 +159,25 @@ function addReceipt(receipt){
         highlightPayer(sharedDiv, receipt);
     }
     newReceipt.appendChild(sharedDiv);
-    newReceipt.onclick = function () { showFullReceipt(receipt) };
+    newReceipt.onclick = function () { showReceipt(receipt) };
+    
     return newReceipt;
 };
+
+function showReceipt(receipt) {
+    if (!recentClick){
+        recentClick = true;
+        console.log("click is" + recentClick);
+        showFullReceipt(receipt);
+        setTimeout(() => {
+            recentClick = false;
+            console.log("timer: click is now" + recentClick);
+        }, 1200);
+    }
+    else {
+        return;
+    }
+}
 
 function createReceiptTitle(value, class_name){
     let title = document.createElement("div");

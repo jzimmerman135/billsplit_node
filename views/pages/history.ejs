@@ -9,6 +9,17 @@
     <link rel="stylesheet" href="/stylesheets/history.css">
     <style>
         /* page specific style declarations */
+        .sharePrev {
+            margin-left: auto;
+            margin-right: 1rem;
+            padding: 0.5rem;
+        }
+        .sharePrev:after {
+            content: '\002B';
+        }
+        .totals {
+            margin: 0.3rem;
+        }
     </style>
     
 </head>
@@ -54,13 +65,17 @@
                             <span id="totalsRow">
                             
                             </span>
+                            <div onclick="share()" class="sharePrev">Share</div>
                         </div>
+                        
                     </div>
                     
                 </div>
             </div>
         </div>      
-        
+        <form style="display: none;" id="errorDetect" method="post" action="/history">
+            <input type="hidden" value="" name="username">
+        </form>
         <!-- FOOTER CAN IGNORE -->
         <%- include('../partials/_footer') %>
     </div>
@@ -90,9 +105,11 @@
         var finalTotals = []; //dummy, ignore
         var payer = -1;
         
+        var recentClick = false;
+
         var receiptstring = <%- allReceipts %>; //receive string of {receipts: [array of receipts]}
         console.log("receiptstring " + receiptstring);
-        var receipts = receiptstring.receipts.reverse(); //just the array
+        const receipts = receiptstring.receipts.reverse(); //just the array
         console.log("receipts array " + receipts);
         createReceiptList(receipts); //pass the array
     </script>

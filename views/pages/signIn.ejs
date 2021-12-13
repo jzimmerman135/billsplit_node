@@ -2,7 +2,10 @@
 <html lang="en" dir="ltr">
 <head>
     <%- include('../partials/_header') %>
-
+     <meta name="google-signin-client_id" content="740752754043-hh1nre2il2oq56b5mdfd3ubbc4sb29li.apps.googleusercontent.com">
+      <script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
+      <script src="https://code.jquery.com/jquery-3.1.1.min.js"   integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="   crossorigin="anonymous"></script>
+      <html xmlns="http://www.w3.org/1999/xhtml">
     <title>BillSplit - Sign In</title>
     <style>
         /* BUTTON STYLING */
@@ -19,7 +22,7 @@
             border-color: var(--text_dark);
             border-width: 2px;
             transition: 0.3s;
-            
+           
         }
 
         .button:hover{
@@ -86,9 +89,9 @@
            }
            
     </style>
-    
+   
 </head>
-    
+   
 <body>
     <div id="pageContainer">
         <!-- HEADER STUFF, CAN IGNORE -->
@@ -96,7 +99,7 @@
 
         <!-- THIS SHOULD BE A LINK TO A SCRIPT THAT DETERMINES FROM COOKIES IF USER IS A GUEST
                 Note: must use a bool var called guestUser -->
-        
+       
         <!-- ALL PAGE CONTENT HERE -->
         <div style="width: 100%; display: flex; justify-content: center; padding-top: 150px;">
             <div class="fillout">
@@ -113,7 +116,11 @@
                     </section>
                     <p style="text-align: center; padding-bottom: 1em;">Forgot your password? <a href="/contact">Contact us</a></p>
                     <div style="width: 100%; display: flex; justify-content: center;">
-                    <input type="submit" value = "Sign In" class="button"/>
+                    <input type = "submit" value = "Sign In" class="button"/>
+                    <!-- <div id="my-signin2" data-onsuccess="onSignIn"></div> -->
+                    <div class = "g-signin2" data-onsuccess="onSignIn">
+                   
+                    </div>  
                     </div>
                     <section>
                         <p style="text-align: center; padding-top: 1em;">Don't have an account? <a href="/signUp">Sign up!</a></p>
@@ -122,46 +129,68 @@
                     </form>
                 </div>
             </div>
+            <!-- <div class = "g-signin2" data-onsuccess="onSignIn">
+           
+            </div>   -->
+            <form name = "form2" action="/googleSignIn" method = "post">
+              <input type = "hidden" name = "gUser" id = "gUser">
+            </form>
         </div>
-        <div class = "g-signin2" data-onsuccess="onSignIn">
-        
-        </div>  
         <br/><br/>
-        <button onclick="signOut()" class = "signOut">Sign Out</button>
                  
-        
+       
         <!-- FOOTER CAN IGNORE -->
         <%- include('../partials/_footer') %>
-    
+   
     </div>
-    
-</body>
-    
+   
+
+   
     <%- include('../partials/_guestUser') %>
 
     <!-- Verifies user input -->
-    <script src="/scripts/verifySignForm.js"></script> 
+    <script src="/scripts/verifySignForm.js"></script>
     <script language = "javascript">
         if (!guestUser) {
             //a signed in user should never be able to access the sign in page
             window.location.href = "/";
         }
-
-        function onSignIn(googleUser) {
-            var profile = googleUser.getBasicProfile();
-            console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
-            console.log('Name: ' + profile.getName());
-            console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
-        }
-        
-        
-        function signOut(){
-            gapi.auth2.getAuthInstance().signOut().then(function() {
-            console.log('user signed out');
-            })
-        }
-    </script>
        
-    
+        function onSuccess(googleUser) {
+            console.log('Logged in as: ' + googleUser.getBasicProfile().getName());
+   }
+   
+   function onSignIn(googleUser) {
+   var profile = googleUser.getBasicProfile();
+   console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+   console.log('Name: ' + profile.getName());
+   console.log('Email: ' + profile.getEmail());
+    //var username = profile.getEmail(); // This is null if the 'email' scope is not present.
+    console.log('username is ' + profile.getEmail());
+    document.getElementById("gUser").value = profile.getEmail();
+    console.log("gUser value is " + document.getElementById("gUser").value);
+    document.form2.submit();
+ }
+ 
+   function onFailure(error) {
+     console.log(error);
+   }
+   // function renderButton() {
+   //   gapi.signin2.render('my-signin2', {
+   //     'scope': 'profile email',
+   //     'width': 240,
+   //     'height': 50,
+   //     'longtitle': true,
+   //     'theme': 'dark',
+   //     'onsuccess': onSuccess,
+   //     'onfailure': onFailure
+   //   });
+   // }
+    </script>
+   
+     
+ </body>
+       
+   
 
 </html>
