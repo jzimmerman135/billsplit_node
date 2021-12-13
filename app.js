@@ -7,7 +7,7 @@ const encrypt = require('./SHAcrypt.js');
 const MongoClient = require('mongodb').MongoClient;
 const url = "mongodb+srv://user:db1@billsplit.6feyv.mongodb.net/billsplit?retryWrites=true&w=majority";
 
-const port = 8080;
+const port = process.env.PORT || 5000;
 
 const app = express();
 app.set('view engine', 'ejs');
