@@ -60,6 +60,19 @@ app.get('/logOut', function (req, res) {
  *    cookie dependent links
  *******************************/
 
+app.post('/googleSignIn', function(req, res) {
+    var data = req.body;
+    let username = data.gUser;
+    res.render('./pages/message', {
+        line1 : "Welcome, " + username + ".",
+        line2 : "You are logged in.",
+        username : username, //this will be automatically hashed by the storeUsername function
+        saveUsernameCookie: true,
+        returnWhere : "Home",
+        returnHREF : "/"
+    });
+});
+
 app.post('/history', function (req, res) {
     var data = req.body;
     console.log(req.body);

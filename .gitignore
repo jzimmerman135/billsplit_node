@@ -1,2 +1,5 @@
 #Ignore node build
 node_modules
+
+#Development environment
+.DS_Store
