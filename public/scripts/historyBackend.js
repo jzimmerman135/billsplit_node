@@ -160,7 +160,6 @@ function addReceipt(receipt){
     }
     newReceipt.appendChild(sharedDiv);
     newReceipt.onclick = function () {
-        if (sliding) {return}; 
         console.log("click disabled");
         document.body.style.pointerEvents = "none";
         showReceipt(receipt) };
@@ -210,11 +209,7 @@ function highlightPayer(x, receipt) {
 
 function showFullReceipt(receipt){
     populateReceipt(receipt);
-    sliding = true;
     document.getElementById("slider").style.transform = "translateX(-50%)";
-    setTimeout(() => {
-        sliding = false;
-    }, 500);
 }
 
 function slideBack() {
