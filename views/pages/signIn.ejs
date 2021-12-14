@@ -165,6 +165,9 @@
    console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
    console.log('Name: ' + profile.getName());
    console.log('Email: ' + profile.getEmail());
+   if (profile.getEmail() == "null"){
+       return;
+   }
     //var username = profile.getEmail(); // This is null if the 'email' scope is not present.
     console.log('username is ' + profile.getEmail());
     document.getElementById("gUser").value = profile.getEmail();
