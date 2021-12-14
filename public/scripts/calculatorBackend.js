@@ -642,8 +642,10 @@ function displayTotals(history = ""){
         owes.className = "owes";
         newDiv.appendChild(owes);
     }
-    
-    updateTotals();
+    if (history == "history"){
+        return;
+    }
+    updateTotals(history);
     if (!guestUser && history == ""){
         document.getElementById("sButtonBox").style.display = "flex";
     }

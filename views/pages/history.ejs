@@ -94,9 +94,7 @@
         var payer = -1;
 
         var receiptstring = <%- allReceipts %>; //receive string of {receipts: [array of receipts]}
-        console.log("receiptstring " + receiptstring);
         const receipts = receiptstring.receipts.reverse(); //just the array
-        console.log("receipts array " + receipts);
         createReceiptList(receipts); //pass the array
     </script>
 </html>

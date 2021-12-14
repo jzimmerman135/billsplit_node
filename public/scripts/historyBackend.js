@@ -142,13 +142,13 @@ function createReceiptList(receipts){
 //Builds a new receipt item in the receiptList <ul>
 //Takes in a receipt json
 //and the index of which receipt it is working on relative to the receipts array
-function addReceipt(receipt){
+function addReceipt(receipt, i){
     let newReceipt = document.createElement("li"); 
     newReceipt.className = "oldReceipt";
     let title = createReceiptTitle(receipt.title, "receiptTitle");
     let date = createReceiptTitle(" on " + receipt.date, "receiptDate");
     let sharedDiv = document.createElement("div");
-
+    let index = i;
     
     newReceipt.appendChild(title);
     newReceipt.appendChild(date);
@@ -158,18 +158,16 @@ function addReceipt(receipt){
     }
     newReceipt.appendChild(sharedDiv);
     newReceipt.onclick = function () {
-        document.body.style.pointerEvents = "none";
-        showReceipt(receipt) };
-        newReceipt.onclick = function () {
-                            document.body.style.pointerEvents = "none";
-                            showReceipt(receipt) };
-        newReceipt.ontouchend = function () {
-                            document.body.style.touchAction = "none";
-                            showReceipt(receipt) };
+                        document.body.style.pointerEvents = "none";
+                        showReceipt(index) };
+    newReceipt.ontouchend = function () {
+                        document.body.style.touchAction = "none";
+                        showReceipt(index) };
     return newReceipt;
 };
 
-function showReceipt(receipt) {
+function showReceipt(index) {
+    let receipt = receipts[index];
     showFullReceipt(receipt);
     setTimeout(() => {
         document.body.style.touchAction = "auto";
@@ -249,6 +247,15 @@ function populateReceipt(receipt){
         totals[payer] = totals[payer] * -1;
     }
     displayTotals("history");
+    let owes = document.getElementsByClassName("owes");
+    for (let i = 0; i < owes.length; i++) {
+        if (i == receipt.payer){
+            owes[receipt.payer].innerHTML = " is owed: $" + (-1 * receipt.people[i].owes);
+        }
+        else {
+            owes[i].innerHTML = " owes: $" + (receipt.people[i].owes);
+        }
+    }
 }
 
 function clearArrayData(){
