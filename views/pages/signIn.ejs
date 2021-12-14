@@ -87,7 +87,9 @@
                 color: rgb(255,0,0);
                 display: none;
            }
-           
+        .g-signin2 {
+            padding-top: 0px;
+        }
     </style>
    
 </head>
@@ -121,11 +123,12 @@
                     <!-- <div id="my-signin2" data-onsuccess="onSignIn"></div> -->
                       
                   </div><br>
-                    <div class = "g-signin2" data-onsuccess="onSignIn" style = "width: 100%; display: flex; justify-content: center;">
+                    <!-- <div class="spacer" style="min-height: 0.1rem;"></div> -->
+                    <div class = "g-signin2" data-onsuccess="onSignIn" style = "width: 100%; display: flex; justify-content: center; margin-top: 0.2rem;">
                     
                     </div>
                     <section>
-                        <p style="text-align: center; padding-top: 1em;">Don't have an account? <a href="/signUp">Sign up!</a></p>
+                        <p style="text-align: center; padding-top: 1rem;">Don't have an account? <a href="/signUp">Sign up!</a></p>
                     </section>
                     <!-- TODO: Include signing it w/ Google -->
                     </form>
