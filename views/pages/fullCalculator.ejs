@@ -109,7 +109,7 @@
     <!-- LINKS TO EXTERNAL FUNCTION SCRIPTS
          format: src"/scripts/example.js" --> 
     <script src="/scripts/calculatorBackend.js"></script>
-    
+    <script src="/scripts/getTax.js"></script>
     <!-- Page Executable -->
     <script>
         var nameColors = ["#add45c","#6AD2FF","#F6E65E","#28E1D4",
@@ -122,7 +122,7 @@
         var items = [];
         var prices = [];
         var sharedBy = [];
-        var tax = 1.0625;
+        var tax = getLocalTax();
         var totals = [];
         
         var finalTotals = [];
