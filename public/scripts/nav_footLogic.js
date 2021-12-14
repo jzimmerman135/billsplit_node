@@ -3,7 +3,6 @@
     ******************************************/
     
     function updateNavItems(guestUser){
-        console.log("called because guest is" + guestUser);
         if (guestUser){
             var x = document.getElementsByName("userItem");
             for (let i=0; i < x.length; i++){

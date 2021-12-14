@@ -1,5 +1,3 @@
-
-
 function getExampleReceipts(userName){
     let receipts = new Array(); 
     if (userName != "none") {  
@@ -160,17 +158,22 @@ function addReceipt(receipt){
     }
     newReceipt.appendChild(sharedDiv);
     newReceipt.onclick = function () {
-        console.log("click disabled");
         document.body.style.pointerEvents = "none";
         showReceipt(receipt) };
+        newReceipt.onclick = function () {
+                            document.body.style.pointerEvents = "none";
+                            showReceipt(receipt) };
+        newReceipt.ontouchend = function () {
+                            document.body.style.touchAction = "none";
+                            showReceipt(receipt) };
     return newReceipt;
 };
 
 function showReceipt(receipt) {
     showFullReceipt(receipt);
     setTimeout(() => {
+        document.body.style.touchAction = "auto";
         document.body.style.pointerEvents = "auto";
-        console.log("click enabled");
     }, 1000);
 }
 
@@ -260,7 +263,6 @@ function removeAllElementsByClassName(class_name) {
     let rows = [];
     rows = document.getElementsByClassName(class_name);
     for (let i = 0; i < rows.length; i++) {
-        console.log("removing row " + i);
         rows[i].remove()
     }
     rows = document.getElementsByClassName(class_name);

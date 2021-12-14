@@ -2,7 +2,6 @@ var express = require('express');
 const ejs = require('ejs');
 const bcrypt = require('bcryptjs');
 const saltRounds = 10;
-const encrypt = require('./SHAcrypt.js');
 
 const MongoClient = require('mongodb').MongoClient;
 const url = "mongodb+srv://user:db1@billsplit.6feyv.mongodb.net/billsplit?retryWrites=true&w=majority";
@@ -75,9 +74,7 @@ app.post('/googleSignIn', function(req, res) {
 
 app.post('/history', function (req, res) {
     var data = req.body;
-    console.log(req.body);
     if (data.username == false) {
-        console.log("user not signed in");
         res.redirect('/');
     }
 
@@ -92,13 +89,19 @@ app.post('/history', function (req, res) {
 
         coll.find(theQuery).toArray(function (err, items) {
             if (err) {
-                console.log("Error: " + err); // render error page
+                // render error page
+                res.render('./pages/message', {
+                    line1 : "Sorry, there seems to be a problem.",
+                    line2 : "Please try again later.",
+                    username : "null",
+                    saveUsernameCookie: false,
+                    returnWhere : "Home",
+                    returnHREF : "/"
+                });
             }
-            console.log("retrieved from database " + items);
+
             var receiptsArr = { receipts : items }; //make json with receipts: [array of receipts]
-            console.log("receipts arr " + receiptsArr);
             allReceiptsString = JSON.stringify(receiptsArr); //convert the json to string
-            console.log("to string " + allReceiptsString);
             res.render('./pages/history', {
                 allReceipts: allReceiptsString //send the string see history.ejs for continuation
             });
@@ -114,13 +117,10 @@ app.post('/save', function (req, res) {
     // Delete variables below + delete userobj variable if you already have JSON
     // and set userObj = [JSON]
     let data = req.body;
-    console.log(data);
     let receipt = JSON.parse(data.receiptJSON);
-    console.log(receipt);
 
     MongoClient.connect(url, function (err, db) {
         if (err) {
-            console.log("database connection error");
             res.render('./pages/message', {
                 line1 : "Sorry, there seems to be a problem.",
                 line2 : "Please try again later.",
@@ -146,7 +146,7 @@ app.post('/save', function (req, res) {
             var coll = dbo.collection('receiptInfo');
             coll.insertOne(userObj, function (err, result) {
                 if (err) {
-                    console.log("receipt not saved"); // Save not successful. try again later (unlikely unless mongodb server is down)
+                    // Save not successful. try again later (unlikely unless mongodb server is down)
                     res.render('./pages/message', {
                         line1 : "Your receipt " + title + " was not saved",
                         line2 :  "There seems to be an issue.",
@@ -157,7 +157,6 @@ app.post('/save', function (req, res) {
                     });
                 }
                 else {
-                    console.log("receipt saved successfully!") 
                     //render success page
                     res.render('./pages/message', {
                         line1 : "Your receipt " + receipt.title + " was saved",
@@ -176,16 +175,13 @@ app.post('/save', function (req, res) {
 
 app.post('/createUser', function (req, res) {
     var data = req.body;
-    console.log(data);
     rawPass = data.pass;
 
     bcrypt.hash(rawPass, saltRounds, (err, hash) => {
         if (err) {
-            console.log("bcrypt hashing error");
             return;
         }
 
-        console.log(hash);
         var userObj = {
             username: data.username,
             password: hash,
@@ -196,7 +192,7 @@ app.post('/createUser', function (req, res) {
         
         MongoClient.connect(url, function (err, db) {
             if (err) {
-                console.log("database connection error");
+                //database connect error
                 res.render('./pages/message', {
                     line1 : "Sorry, there seems to be a problem.",
                     line2 : "Please try again later.",
@@ -212,8 +208,6 @@ app.post('/createUser', function (req, res) {
                 coll.createIndex({ username: 1 }, { unique: true });
                 coll.insertOne(userObj, function (err, result) {
                     if (err) { //non unique entry
-                        console.log(err);
-                        console.log("Username already exists");
                         res.render('./pages/message', {
                             line1 : "Sorry, the username, " + data.username + " already exists.",
                             line2 : "Please try a new username.",
@@ -224,7 +218,6 @@ app.post('/createUser', function (req, res) {
                         });
                     }
                     else { //successful insertion
-                        console.log("Success! Account created");
                         res.render('./pages/message', {
                             line1 : "You have successfully created an account.",
                             line2 : "Welcome, " + userObj.username + ".",
@@ -246,11 +239,9 @@ app.post('/logIn', function (req, res) {
     var data = req.body;
     user = data.username; 
     rawPass = data.pass;
-    console.log(data);
 
     MongoClient.connect(url, { useUnifiedTopology: true }, function (err, db) {
         if (err) {
-            console.log("database connection error");
             res.render('./pages/message', {
                 line1 : "Sorry, there seems to be a problem.",
                 line2 : "Please try again later.",
@@ -266,12 +257,9 @@ app.post('/logIn', function (req, res) {
             theQuery = { username: user };
             coll.find(theQuery).toArray(function (err, items) {
                 if (err) {
-                    console.log("Query error: " + err);
                     return;
                 }
-                console.log(items);
                 if (items.length == 0){
-                    console.log("username not found");
                     // render incorrect username
                     res.render('./pages/message', {
                         line1 : "Your username is incorrect",
@@ -285,12 +273,9 @@ app.post('/logIn', function (req, res) {
                 for (i = 0; i < items.length; i++) {
                     bcrypt.compare(rawPass, items[i].password, function (err, match){
                         if (err){
-                            console.log("Bcrypt error: " + err);
                             return;
                         }
-                        console.log(match);
                         if (match){
-                            console.log("log in success");
                             // render welcome page
                             res.render('./pages/message', {
                                 line1 : "Welcome, " + data.username + ".",
@@ -302,7 +287,6 @@ app.post('/logIn', function (req, res) {
                             });
                         }
                         if (!match) {
-                            console.log("log in unsuccessful");
                             // render incorrect password
                             res.render('./pages/message', {
                                 line1 : "Your password is incorrect",
@@ -323,11 +307,9 @@ app.post('/logIn', function (req, res) {
 
 app.post('/sendMessage', function (req, res) {
     var data = req.body;
-    console.log(data);
 
     MongoClient.connect(url, function (err, db) {
         if (err) {
-            console.log("database connection error");
             res.render('./pages/message', {
                 line1 : "Sorry, there seems to be a problem.",
                 line2 : "Please try again later.",
@@ -348,7 +330,6 @@ app.post('/sendMessage', function (req, res) {
         var coll = dbo.collection('contactInfo');
         coll.insertOne(userObj, function (err, result) {
             if (err) {
-                console.log("contact us submission not entered");
                 // Save not successful (unlikely unless mongo server is down)
                 res.render('./pages/message', {
                     line1 : "There seems to be an issue.",
@@ -360,7 +341,6 @@ app.post('/sendMessage', function (req, res) {
                 });
             }
             else {
-                console.log("contact submission successful") 
                 // Render successfully sent
                 res.render('./pages/message', {
                     line1 : "Thank you for contacting us.",

@@ -912,7 +912,6 @@ function submitSavedReceipt() {
         }
     }
     document.save.receiptJSON.value = JSON.stringify(makeReceiptJSON(title.value, usernames));
-    console.log(document.save.receiptJSON.value);
     setTimeout(() => {
         document.save.submit();
     }, 3000);

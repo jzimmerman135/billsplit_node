@@ -117,10 +117,12 @@
                     <p style="text-align: center; padding-bottom: 1em;">Forgot your password? <a href="/contact">Contact us</a></p>
                     <div style="width: 100%; display: flex; justify-content: center;">
                     <input type = "submit" value = "Sign In" class="button"/>
+                    
                     <!-- <div id="my-signin2" data-onsuccess="onSignIn"></div> -->
-                    <div class = "g-signin2" data-onsuccess="onSignIn">
-                   
-                    </div>  
+                      
+                  </div><br>
+                    <div class = "g-signin2" data-onsuccess="onSignIn" style = "width: 100%; display: flex; justify-content: center;">
+                    
                     </div>
                     <section>
                         <p style="text-align: center; padding-top: 1em;">Don't have an account? <a href="/signUp">Sign up!</a></p>
@@ -156,39 +158,20 @@
             window.location.href = "/";
         }
        
-        function onSuccess(googleUser) {
-            console.log('Logged in as: ' + googleUser.getBasicProfile().getName());
-   }
+        function onSuccess(googleUser) {}
    
-   function onSignIn(googleUser) {
-   var profile = googleUser.getBasicProfile();
-   console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
-   console.log('Name: ' + profile.getName());
-   console.log('Email: ' + profile.getEmail());
-   if (profile.getEmail() == "null"){
-       return;
-   }
-    //var username = profile.getEmail(); // This is null if the 'email' scope is not present.
-    console.log('username is ' + profile.getEmail());
-    document.getElementById("gUser").value = profile.getEmail();
-    console.log("gUser value is " + document.getElementById("gUser").value);
-    document.form2.submit();
- }
+        function onSignIn(googleUser) {
+            var profile = googleUser.getBasicProfile();
+            if (profile.getEmail() == "null"){
+                return;
+            }
+            document.getElementById("gUser").value = profile.getEmail();
+            document.form2.submit();
+        }
  
-   function onFailure(error) {
-     console.log(error);
-   }
-   // function renderButton() {
-   //   gapi.signin2.render('my-signin2', {
-   //     'scope': 'profile email',
-   //     'width': 240,
-   //     'height': 50,
-   //     'longtitle': true,
-   //     'theme': 'dark',
-   //     'onsuccess': onSuccess,
-   //     'onfailure': onFailure
-   //   });
-   // }
+        function onFailure(error) {
+            console.log(error);
+        }
     </script>
    
      
