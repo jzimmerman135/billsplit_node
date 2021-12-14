@@ -448,7 +448,7 @@ function invalidate(id,val){
         }
         //val != this same initial imtrying to edit
         //(i.e. if I am changing a in anesu, i can still set it back to a)
-        if (initials.includes(val) && 
+        if (initials.includes(val.toLowerCase()) && 
         val != initials[parseInt(id.substring('initials'.length)) -1])
         {
             initialTaken(val);
