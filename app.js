@@ -65,7 +65,7 @@ app.post('/googleSignIn', function(req, res) {
     let username = data.gUser;
     res.render('./pages/message', {
         line1 : "Welcome, " + username + ".",
-        line2 : "You are logged in.",
+        line2 : "You are logged in via Google.",
         username : username, //this will be automatically hashed by the storeUsername function
         saveUsernameCookie: true,
         returnWhere : "Home",
