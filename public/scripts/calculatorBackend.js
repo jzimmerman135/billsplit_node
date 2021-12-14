@@ -894,6 +894,12 @@ function saveReceipt() {
     document.getElementsByClassName("saveArea")[0].style.display = "flex";
 }
 
+function failEnterKey(event) {  
+    if (event.keycode == 13) {
+        event.preventDefault();
+    }
+}
+
 function submitSavedReceipt() {
     var title = document.getElementsByTagName("input")["title"];
     if (title.value == "") {
@@ -911,6 +917,7 @@ function submitSavedReceipt() {
     }
     document.save.receiptJSON.value = JSON.stringify(makeReceiptJSON(title.value, usernames));
     setTimeout(() => {
+        document.save.onsubmit = function () {return true;}
         document.save.submit();
     }, 100);
 }

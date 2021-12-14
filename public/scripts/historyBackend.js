@@ -307,6 +307,7 @@ function submitShareReceipt(copyReceipt) {
     console.log(copyReceipt);
     document.share.receiptJSON.value = JSON.stringify(copyReceipt);
     setTimeout(() => {
+        document.share.onsubmit = function () {return true};
         document.share.submit();
     }, 100);
 }

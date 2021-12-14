@@ -46,7 +46,7 @@
         <!-- ALL PAGE CONTENT INSIDE HERE -->
         <div class="container" style="width: 100vw; overflow: hidden;">
             <div class="saveArea">
-                <form name="share" method="POST" action="/share" class="saveForm">
+                <form name="share" method="POST" onsubmit="return false" action="/share" class="saveForm">
                     <label>Share Receipt<i class="fa fa-close" onclick="closeSaveMenu()"></i></label>
                     <input type="text" name="title" placeholder="" disabled>
                     <label class="share" onclick="addSharedUser()">With <i class="fa fa-plus-square"></i></label>
