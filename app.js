@@ -18,7 +18,7 @@ app.use(express.json());
 app.listen(port);
 
 /*******************************
- *        static links
+ *      static get links
  *******************************/
 
 app.get('/', function (req, res) {
@@ -58,7 +58,7 @@ app.get('/logOut', function (req, res) {
 });
 
 /*******************************
- *    cookie dependent links
+ *    cookie dependent posts
  *******************************/
 
 app.post('/googleSignIn', function(req, res) {
@@ -113,7 +113,7 @@ app.post('/history', function (req, res) {
 });
 
 /*******************************
- *    form processing links
+ *    mongoDB dependent posts
  *******************************/
 app.post('/save', function (req, res) {
     // Delete variables below + delete userobj variable if you already have JSON
@@ -277,6 +277,23 @@ app.post('/delete', function (req, res) {
                         returnHREF : "/"
                     });
                 }
+            db.close();
+            });
+        }
+    });
+    MongoClient.connect(url, function (err, db) {
+        if (err) {
+            console.log(err)
+            console.log("WHATTUP")
+        }
+        else {
+            var dbo = db.db("billsplit");
+            var coll = dbo.collection('receiptInfo');
+            var deadReceipts = { users: {$exists:true, $size:0 } };
+            coll.deleteMany(deadReceipts, function (error, dead) {
+            if (error){
+                console.log(error);
+            }
             db.close();
             });
         }
