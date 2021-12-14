@@ -900,11 +900,7 @@ function submitSavedReceipt() {
         title.placeholder = "Enter a title";
         return;
     }
-    // let saveForm = document.getElementsByClassName("saveForm")[0];
-    // let stringifiedReceipt = document.createElement('input');
-    // stringifiedReceipt.name = "receiptJSON";
-    // stringifiedReceipt.style.display = "none";
-    // saveForm.appendChild(stringifiedReceipt);
+
     let usernameOBJs = document.getElementsByName("sharedUser");
     let usernames = [username]; //initialize array with current username
     for (let i = 0; i < usernameOBJs.length; i++) {
@@ -916,5 +912,5 @@ function submitSavedReceipt() {
     document.save.receiptJSON.value = JSON.stringify(makeReceiptJSON(title.value, usernames));
     setTimeout(() => {
         document.save.submit();
-    }, 3000);
+    }, 100);
 }

@@ -9,6 +9,31 @@
     <link rel="stylesheet" href="/stylesheets/history.css">
     <style>
         /* page specific style declarations */
+        .addUser {
+            margin: 0.3rem;
+            margin-left: auto;
+            margin-right: 1.5rem;
+            color: var(--text_dark);
+            font-size: 18px; 
+            padding: 0.2rem;
+            opacity: 0.8;
+            border: 2px solid transparent;
+            border-radius: 0.3rem;
+            transition: 0.3s;
+        }
+        .addUser i {
+            padding-left: 0.15rem;
+        }
+
+        .addUser:hover {
+            cursor: pointer;
+            border-color: var(--text_dark_low_opacity);
+        }
+        .buttonHolder {
+            display: flex;
+            justify-content: space-between;
+            padding: 0 0.5rem;
+        }
     </style>
     
 </head>
@@ -20,6 +45,21 @@
 
         <!-- ALL PAGE CONTENT INSIDE HERE -->
         <div class="container" style="width: 100vw; overflow: hidden;">
+            <div class="saveArea">
+                <form name="share" method="POST" action="/share" class="saveForm">
+                    <label>Share Receipt<i class="fa fa-close" onclick="closeSaveMenu()"></i></label>
+                    <input type="text" name="title" placeholder="" disabled>
+                    <label class="share" onclick="addSharedUser()">With <i class="fa fa-plus-square"></i></label>
+                    <div id="sharedUsers">
+
+                    </div>
+                    <div class="saveButton">Share</div>
+                    <div class="note">
+                        Receipt changes are final when saved
+                    </div>
+                    <input name="receiptJSON" type="hidden" value="">
+                </form>
+            </div>
             <h1>Previous Receipts</h1>
             <div id="slider">
                 <div class="prevReceipts">
@@ -30,14 +70,19 @@
                     
                     <div class="receiptWrap">
                         <div id="topInfo">
-                            <i class="fa fa-arrow-left"onclick="slideBack()"><span>Back</span></i>
+                            <span class="buttonHolder">
+                                <i class="fa fa-arrow-left"onclick="slideBack()"><span>Back</span></i>
+                                <form name="delete" action="/delete" method="POST">
+                                    <i class="fa fa-trash" id="deleteButton" onclick="deleteReceipt()"></i>
+                                    <input type="hidden" name="id">  
+                                    <input type="hidden" name="receiptJSON">   
+                                </form>
+                            </span>
                             <span style="display: flex; vertical-align: center; justify-content: space-around;">
                                 
                                 <div class="receiptTitle"></div>
                                 <div class="receiptDate" style="padding-top:0.5rem"></div>
                             </span>
-                                  
-                                
                         </div>
                             <div id="fullReceipt">
                             <div class="receiptHeader">
@@ -54,6 +99,7 @@
                             <span id="totalsRow">
                             
                             </span>
+                            <div class="addUser" onclick="sharePrevReceipt()">Share<i class="fa fa-plus-square"></i></div>
                         </div>
                         
                     </div>
@@ -96,5 +142,6 @@
         var receiptstring = <%- allReceipts %>; //receive string of {receipts: [array of receipts]}
         const receipts = receiptstring.receipts.reverse(); //just the array
         createReceiptList(receipts); //pass the array
+        addSharedUser();
     </script>
 </html>

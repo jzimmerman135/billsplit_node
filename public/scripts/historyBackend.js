@@ -210,6 +210,8 @@ function highlightPayer(x, receipt) {
 
 function showFullReceipt(receipt){
     populateReceipt(receipt);
+    document.getElementsByClassName("addUser")[0].onclick = function () { sharePrevReceipt(receipt);}
+    document.getElementById("deleteButton").onclick = function () { deleteReceipt(receipt);}
     document.getElementById("slider").style.transform = "translateX(-50%)";
 }
 
@@ -279,3 +281,54 @@ function removeAllElementsByClassName(class_name) {
     return true;
 }
 
+function sharePrevReceipt(receipt) {
+    document.getElementsByClassName("saveArea")[0].style.display = "flex";
+    document.getElementsByTagName("input")["title"].value = receipt.title;
+    let copyReceipt = JSON.parse(JSON.stringify(receipt));
+    console.log(receipt);
+    console.log("^^FROM SHAREPREV");
+    document.getElementsByClassName("saveButton")[0].onclick = function () {submitShareReceipt(copyReceipt)};
+}
+
+function submitShareReceipt(copyReceipt) {
+    let usernameOBJs = document.getElementsByName("sharedUser");
+    let usernames = []; //initialize array without current username
+    for (let i = 0; i < usernameOBJs.length; i++) {
+        let str = usernameOBJs[i].value; //add new usernames
+        if (str != ""){
+            usernames.push(hash(str));
+        }
+    }
+    if (usernames.length == 0) {
+        return;
+    }
+    copyReceipt.users = [];
+    copyReceipt.users = usernames;
+    console.log(copyReceipt);
+    document.share.receiptJSON.value = JSON.stringify(copyReceipt);
+    setTimeout(() => {
+        document.share.submit();
+    }, 100);
+}
+
+function deleteReceipt(copyFromReceipt) {
+    let text = "Are you sure you want to delete receipt \'" + copyFromReceipt.title + "\'?\n This action is not reversible.";
+    if (confirm(text) == false) {
+        return;
+    }
+    let receipt = JSON.parse(JSON.stringify(copyFromReceipt));
+    console.log(receipt);
+    let newusers = [];
+    newusers = receipt.users;
+    let index = newusers.indexOf(username);
+    if (index == -1){
+        return;
+    }
+    newusers.splice(index,1);
+    receipt.users = newusers;
+    document.delete.id.value = receipt._id;
+    document.delete.receiptJSON.value = JSON.stringify(receipt);
+    setTimeout(() => {
+        document.delete.submit();
+    }, 100);
+}

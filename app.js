@@ -3,8 +3,10 @@ const ejs = require('ejs');
 const bcrypt = require('bcryptjs');
 const saltRounds = 10;
 
+const ObjectId = require('mongodb').ObjectId; 
 const MongoClient = require('mongodb').MongoClient;
 const url = "mongodb+srv://user:db1@billsplit.6feyv.mongodb.net/billsplit?retryWrites=true&w=majority";
+
 
 const port = process.env.PORT || 5000;
 
@@ -148,7 +150,7 @@ app.post('/save', function (req, res) {
                 if (err) {
                     // Save not successful. try again later (unlikely unless mongodb server is down)
                     res.render('./pages/message', {
-                        line1 : "Your receipt " + title + " was not saved",
+                        line1 : "Your receipt \'" + title + "\' was not saved",
                         line2 :  "There seems to be an issue.",
                         username : "null",
                         saveUsernameCookie: false,
@@ -159,17 +161,125 @@ app.post('/save', function (req, res) {
                 else {
                     //render success page
                     res.render('./pages/message', {
-                        line1 : "Your receipt " + receipt.title + " was saved",
-                        line2 :  "Find it in 'My Receipts'.",
+                        line1 : "Your receipt \'" + receipt.title + "\' was saved",
+                        line2 :  "Find it in My Receipts.",
                         username : "null",
                         saveUsernameCookie: false,
                         returnWhere : "Home",
                         returnHREF : "/"
                     });
                 }
+            db.close();
             });
         }
-        db.close
+    });
+});
+
+app.post('/share', function (req, res) {
+    // Delete variables below + delete userobj variable if you already have JSON
+    // and set userObj = [JSON]
+    let data = req.body;
+    let receipt = JSON.parse(data.receiptJSON);
+
+    MongoClient.connect(url, function (err, db) {
+        if (err) {
+            res.render('./pages/message', {
+                line1 : "Sorry, there seems to be a problem.",
+                line2 : "Please try again later.",
+                username : "null",
+                saveUsernameCookie: false,
+                returnWhere : "Home",
+                returnHREF : "/"
+            });
+        }
+        else {
+            var userObj = {
+                title: receipt.title,
+                users: receipt.users,
+                date: receipt.date,
+                people: receipt.people,
+                tax: receipt.tax,
+                subtotal: receipt.subtotal,
+                total: receipt.total,
+                payer: receipt.payer,
+                items: receipt.items
+            };
+            var dbo = db.db("billsplit");
+            var coll = dbo.collection('receiptInfo');
+            coll.insertOne(userObj, function (err, result) {
+                if (err) {
+                    // Save not successful. try again later (unlikely unless mongodb server is down)
+                    res.render('./pages/message', {
+                        line1 : "Your receipt \'" + title + "\' was not shared",
+                        line2 :  "There seems to be an issue, try again later.",
+                        username : "null",
+                        saveUsernameCookie: false,
+                        returnWhere : "Home",
+                        returnHREF : "/"
+                    });
+                }
+                else {
+                    //render success page
+                    res.render('./pages/message', {
+                        line1 : "Your receipt \'" + receipt.title + "\' was shared",
+                        line2 :  "",
+                        username : "null",
+                        saveUsernameCookie: false,
+                        returnWhere : "Home",
+                        returnHREF : "/"
+                    });
+                }
+            db.close();
+            });
+        }
+    });
+});
+
+app.post('/delete', function (req, res) {
+    var data = req.body;
+    let receipt = JSON.parse(data.receiptJSON);
+    
+    MongoClient.connect(url, function (err, db) {
+        if (err) {
+            res.render('./pages/message', {
+                line1 : "Sorry, there seems to be a problem.",
+                line2 : "Please try again later.",
+                username : "null",
+                saveUsernameCookie: false,
+                returnWhere : "Home",
+                returnHREF : "/"
+            });
+        }
+        else {
+            var dbo = db.db("billsplit");
+            var coll = dbo.collection('receiptInfo');
+            var o_id = new ObjectId(data.id);
+            var myquery = { _id : o_id };
+            var newvalues = { $set: { users: receipt.users } };
+            coll.updateOne(myquery, newvalues, function(err, result) {
+                if (err) {
+                    res.render('./pages/message', {
+                        line1 : "Sorry, there seems to be a problem.",
+                        line2 : "Please try again later.",
+                        username : "null",
+                        saveUsernameCookie: false,
+                        returnWhere : "Home",
+                        returnHREF : "/"
+                    });
+                }
+                else {
+                    res.render('./pages/message', {
+                        line1 : "Your receipt \'" + receipt.title + "\' has been deleted.",
+                        line2 : "Verify in My Receipts.",
+                        username : "null",
+                        saveUsernameCookie: false,
+                        returnWhere : "Home",
+                        returnHREF : "/"
+                    });
+                }
+            db.close();
+            });
+        }
     });
 });
 
