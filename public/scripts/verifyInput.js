@@ -3,11 +3,11 @@ function validateSignUp() {
      var user = /^[a-z0-9]+$/i;
      var emailCheck = /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/;
      // Verification for sign up text boxes
-     username = document.data.username.value;
-     pass = document.data.pass.value;
-     first = document.data.fname.value;
-     last = document.data.lname.value;
-     email = document.data.email.value;
+     username = sanitize(document.data.username.value);
+     pass = sanitize(document.data.pass.value);
+     first = sanitize(document.data.fname.value);
+     last = sanitize(document.data.lname.value);
+     email = sanitize(document.data.email.value);
      if (username == "" || !user.test(username)) {
           err = true;
           show("usernameVerify");
@@ -44,8 +44,8 @@ function validateSignUp() {
 
 function validateSignIn() {
      err = false;
-     user = document.data.username.value;
-     pass = document.data.pass.value;
+     user = sanitize(document.data.username.value);
+     pass = sanitize(document.data.pass.value);
      // Verification for sign in text boxes
      if (user == "" || pass == "") {
           err = true;
@@ -62,9 +62,9 @@ function validateContact() {
      // Verification for sign in text boxes
      var user = /^[a-z0-9]+$/i;
      var emailCheck = /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/;
-     username = document.data.username.value;
-     email = document.data.email.value;
-     msg = document.data.message.value;
+     username = sanitize(document.data.username.value);
+     email = sanitize(document.data.email.value);
+     msg = sanitize(document.data.message.value);
      // Verification for sign up text boxes
      if (username == "" || !user.test(username)) {
           err = true;

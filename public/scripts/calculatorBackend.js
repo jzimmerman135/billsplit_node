@@ -923,8 +923,3 @@ function submitSavedReceipt() {
         document.save.submit();
     }, 100);
 }
-
-function sanitize(dirty) {
-    let clean = DOMPurify.sanitize( dirty );
-    return clean;
-}
