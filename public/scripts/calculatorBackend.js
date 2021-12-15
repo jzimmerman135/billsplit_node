@@ -171,7 +171,7 @@ function setFinalTax(){
 function promptFor(type){
     let result = document.getElementById("inBar").value;
     document.getElementById("inBar").value = "";
-
+    result = sanitize(result);
     if (type == "item"){
         if (invalidate(type,result)){
             updateErrorMessage("Please enter an item.");
@@ -910,14 +910,18 @@ function submitSavedReceipt() {
     let usernameOBJs = document.getElementsByName("sharedUser");
     let usernames = [username]; //initialize array with current username
     for (let i = 0; i < usernameOBJs.length; i++) {
-        let str = usernameOBJs[i].value;
+        let str = sanitize(usernameOBJs[i].value);
         if (str != ""){
             usernames.push(hash(str));
         }
     }
-    document.save.receiptJSON.value = JSON.stringify(makeReceiptJSON(title.value, usernames));
+    document.save.receiptJSON.value = JSON.stringify(makeReceiptJSON(sanitize(title.value), usernames));
     setTimeout(() => {
         document.save.onsubmit = function () {return true;}
         document.save.submit();
     }, 100);
+}
+
+function sanitize(str) {
+    return str = str.replaceAll("\\<.*?\\>", "");
 }

@@ -294,7 +294,7 @@ function submitShareReceipt(copyReceipt) {
     let usernameOBJs = document.getElementsByName("sharedUser");
     let usernames = []; //initialize array without current username
     for (let i = 0; i < usernameOBJs.length; i++) {
-        let str = usernameOBJs[i].value; //add new usernames
+        let str = sanitize(usernameOBJs[i].value); //add new usernames
         if (str != ""){
             usernames.push(hash(str));
         }
