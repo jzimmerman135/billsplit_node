@@ -31,7 +31,6 @@ function enterInitial(event) {
 }
 
 function getName(){
-    hideWelcome();
     if (names.length > 0){
         document.getElementById("finishButton").disabled = false;
     }
@@ -55,10 +54,10 @@ function getName(){
     }
 
     let name = promptFor("name");
-    updateMessage("Enter next person");
-    updateErrorMessage("");
-
     if (name != "invalid") {
+        hideWelcome();
+        updateMessage("Enter next person");
+        updateErrorMessage("");
         name = cleanName(name);
         names.push(name);
         let init = makeInitial(name);
@@ -171,7 +170,6 @@ function setFinalTax(){
 function promptFor(type){
     let result = document.getElementById("inBar").value;
     document.getElementById("inBar").value = "";
-    result = sanitize(result);
     if (type == "item"){
         if (invalidate(type,result)){
             updateErrorMessage("Please enter an item.");
@@ -410,6 +408,9 @@ function editData(id, newData){
 }
 
 function invalidate(id,val){
+    if (sanitize(val) != val){
+        return true;
+    }
     if (id[0] == "i" && id[1] == "t"){
         if (val == ""){
             return true;
@@ -922,6 +923,7 @@ function submitSavedReceipt() {
     }, 100);
 }
 
-function sanitize(str) {
-    return str = str.replaceAll("\\<.*?\\>", "");
+function sanitize(dirty) {
+    let clean = DOMPurify.sanitize( dirty );
+    return clean;
 }
