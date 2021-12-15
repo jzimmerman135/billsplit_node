@@ -903,6 +903,7 @@ function failEnterKey(event) {
 
 function submitSavedReceipt() {
     var title = document.getElementsByTagName("input")["title"];
+    title.value = sanitize(title.value);
     if (title.value == "") {
         title.placeholder = "Enter a title";
         return;
@@ -916,7 +917,7 @@ function submitSavedReceipt() {
             usernames.push(hash(str));
         }
     }
-    document.save.receiptJSON.value = JSON.stringify(makeReceiptJSON(sanitize(title.value), usernames));
+    document.save.receiptJSON.value = JSON.stringify(makeReceiptJSON(title.value, usernames));
     setTimeout(() => {
         document.save.onsubmit = function () {return true;}
         document.save.submit();
