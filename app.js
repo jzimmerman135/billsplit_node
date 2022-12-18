@@ -5,7 +5,7 @@ const saltRounds = 10;
 
 const ObjectId = require('mongodb').ObjectId; 
 const MongoClient = require('mongodb').MongoClient;
-const url = "mongodb+srv://user:db1@billsplit.6feyv.mongodb.net/billsplit?retryWrites=true&w=majority";
+const url = process.env.KEY_ID; // "mongodb+srv://user:db1@billsplit.6feyv.mongodb.net/billsplit?retryWrites=true&w=majority";
 
 
 const port = process.env.PORT || 5000;
